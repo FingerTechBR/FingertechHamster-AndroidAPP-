@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
 
 
     @BindView(R.id.btn_captura)  Button btn_captura;
+    @BindView(R.id.iv_digital_1) ImageView iv_digital_1;
+    @BindView(R.id.iv_digital_2) ImageView iv_digital_2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
 
 
 
+        //nitgen.openDevice();
         nitgen.onCapture1(10000);
 
 
@@ -156,7 +160,15 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
 
     @Override
     public void onCapture(NBioBSPJNI.CAPTURED_DATA capturedData) {
-
+        if (capturedData.getImage() != null) {
+            runOnUiThread(() -> {
+                if (iv_digital_1 == null) {
+                    iv_digital_1.setImageBitmap(capturedData.getImage());
+                } else {
+                    iv_digital_2.setImageBitmap(capturedData.getImage());
+                }
+            });
+        }
     }
 
     @Override
@@ -167,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
     @Override
     public void onInforMessage(String msg) {
         runOnUiThread(() -> {
-            Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
         });
     }
     @Override
@@ -178,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
     @Override
     public void showToast(String msg) {
         runOnUiThread(() -> {
-            Toast.makeText(this,"primeira",Toast.LENGTH_SHORT).show();
+
 
             Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
         });
