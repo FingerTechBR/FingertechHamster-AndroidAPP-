@@ -47,7 +47,7 @@ public class Nitgen {
             if (bsp.IsErrorOccured())
                 msg = "NBioBSP Error: " + bsp.GetErrorCode();
             else {
-                msg = "SDK Version: " + bsp.GetVersion();
+                msg = "Versão SDK: " + bsp.GetVersion();
                 exportEngine = bsp.new Export();
                 indexSearch = bsp.new IndexSearch();
             }

@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,11 +40,26 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
 
     private AppBarConfiguration mAppBarConfiguration;
     private Nitgen nitgen;
+    private boolean imagemcontroller;
 
 
-    @BindView(R.id.btn_captura)  Button btn_captura;
+
+
+    //imgview
     @BindView(R.id.iv_digital_1) ImageView iv_digital_1;
     @BindView(R.id.iv_digital_2) ImageView iv_digital_2;
+
+    //botões
+    @BindView(R.id.btn_capturar_1) Button btn_capturar_1;
+    @BindView(R.id.btn_capturar_2) Button btn_capturar_2;
+    @BindView(R.id.btn_iniciar_dispositivo)  Button btn_iniciar_dispositivo;
+
+
+    //txt
+    @BindView(R.id.txt_sdk_verssao) TextView txt_sdk_verssao;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +102,11 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
         onCheckPermission();
         //btn_captura.setEnabled(false);
         nitgen = new Nitgen(this, this);
-        nitgen.openDevice();
+
+
+
+        btn_capturar_1.setEnabled(false);
+        btn_capturar_2.setEnabled(false);
 
 
 
@@ -118,14 +138,31 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
 
 
 
+    @OnClick(R.id.btn_capturar_1)
+    public void btn_capturar_1(){
 
-    @OnClick(R.id.btn_captura)
-    public void Captura(){
+        imagemcontroller = true;
+        nitgen.onCapture1(10000);
+
+    }
+
+    @OnClick(R.id.btn_capturar_2)
+    public void btn_capturar_2(){
+
+        imagemcontroller = false;
+        nitgen.onCapture2(10000);
 
 
+
+    }
+
+    @OnClick(R.id.btn_iniciar_dispositivo)
+    public void btn_iniciar_dispositivo(){
 
         //nitgen.openDevice();
-        nitgen.onCapture1(10000);
+
+        nitgen.openDevice();
+
 
 
 
@@ -151,6 +188,10 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
     @Override
     public void onDeviceConnected() {
 
+        btn_iniciar_dispositivo.setText("Fechar dispositivo");
+        btn_capturar_1.setEnabled(true);
+        btn_capturar_2.setEnabled(true);
+
     }
 
     @Override
@@ -162,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
     public void onCapture(NBioBSPJNI.CAPTURED_DATA capturedData) {
         if (capturedData.getImage() != null) {
             runOnUiThread(() -> {
-                if (iv_digital_1 == null) {
+                if (imagemcontroller) {
                     iv_digital_1.setImageBitmap(capturedData.getImage());
                 } else {
                     iv_digital_2.setImageBitmap(capturedData.getImage());
@@ -184,6 +225,10 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
     }
     @Override
     public void onVersion(String msg) {
+        runOnUiThread(() -> {
+            txt_sdk_verssao.setText(msg);
+        });
+
 
     }
 
@@ -191,8 +236,8 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
     public void showToast(String msg) {
         runOnUiThread(() -> {
 
-
             Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+
         });
     }
 

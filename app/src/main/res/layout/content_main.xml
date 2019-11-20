@@ -78,7 +78,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/btn_captura"
+                    android:id="@+id/btn_iniciar_dispositivo"
                     style="@style/fg_button"
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/btn_capturar_1"
                     style="@style/fg_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                     android:layout_weight="0.1" />
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/btn_capturar_2"
                     style="@style/fg_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
