@@ -19,8 +19,8 @@
         app:navGraph="@navigation/mobile_navigation" />
 
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="416dp"
+        android:layout_height="675dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/nav_host_fragment"
         app:layout_constraintStart_toStartOf="@+id/nav_host_fragment"
@@ -40,7 +40,7 @@
                 android:layout_height="0px"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="50dp"
-                android:layout_weight="1"
+                android:layout_weight="20"
                 android:text="Versão SDK: 0.0" />
 
             <LinearLayout
@@ -126,7 +126,41 @@
                     android:text="Captura 2" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteX="3dp"
+                tools:layout_editor_absoluteY="348dp">
+
+                <Button
+                    android:id="@+id/btn_autoOn_1"
+                    style="@style/fg_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_shape"
+                    android:text="AutoOn 1" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1" />
+
+                <Button
+                    android:id="@+id/btn_autoOn_2"
+                    style="@style/fg_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_shape"
+                    android:text="AutoOn 2" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

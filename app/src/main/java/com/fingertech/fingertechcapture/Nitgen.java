@@ -1,7 +1,11 @@
 package com.fingertech.fingertechcapture;
 
 import android.content.Context;
+import android.widget.Button;
+import android.widget.ImageView;
 
+import com.fingertech.fingertechcapture.botoes.botoes_captura;
+import com.fingertech.fingertechcapture.interfaces.imagem_digital;
 import com.nitgen.SDK.AndroidBSP.NBioBSPJNI;
 import com.nitgen.SDK.AndroidBSP.StaticVals;
 import com.nitgen.SDK.AndroidBSP.Trace;
@@ -10,7 +14,7 @@ import com.nitgen.SDK.AndroidBSP.Trace;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class Nitgen {
+public class Nitgen  {
 
     private NBioBSPJNI bsp;
     private NBioBSPJNI.Export exportEngine;
@@ -319,6 +323,9 @@ public class Nitgen {
         }
     }
 
+
+
+
     public void onCapture2(int timeout) {
         NBioBSPJNI.FIR_HANDLE hCapturedFIR, hAuditFIR;
         NBioBSPJNI.CAPTURED_DATA capturedData;
@@ -454,7 +461,7 @@ public class Nitgen {
                     bsp.CheckFinger(bFingerExist);
 
                     if (bFingerExist[0] == 1) {
-                        onCapture1(1000);
+                        //onCapture1(1000);
                     }
                     try {
                         Thread.sleep(500);
@@ -753,7 +760,11 @@ public class Nitgen {
         }
     }
 
+
+
     public interface View {
+
+
         void onDeviceConnected();
         void onDeviceDisconnected();
         void onCapture(NBioBSPJNI.CAPTURED_DATA capturedData);
