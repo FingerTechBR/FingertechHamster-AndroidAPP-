@@ -1,10 +1,10 @@
 package com.fingertech.fingertechcapture;
 
 import android.Manifest;
+import android.app.DialogFragment;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +22,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.fingertech.fingertechcapture.botoes.botoes_captura;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -36,11 +37,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MainActivity extends AppCompatActivity implements Nitgen.View {
+public class MainActivity extends AppCompatActivity implements Nitgen.View, SampleDialogFragment.SampleDialogListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     private Nitgen nitgen;
     private boolean imagemcontroller;
+    private botoes_captura botao;
+    private DialogFragment sampleDialogFragment;
 
 
 
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
     @BindView(R.id.iv_digital_2) ImageView iv_digital_2;
 
     //botões
-    @BindView(R.id.btn_capturar_1) Button btn_capturar_1;
+    @BindView(R.id.btn_autoOn_1) Button btn_capturar_1;
     @BindView(R.id.btn_capturar_2) Button btn_capturar_2;
     @BindView(R.id.btn_iniciar_dispositivo)  Button btn_iniciar_dispositivo;
 
@@ -141,6 +144,8 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
     @OnClick(R.id.btn_capturar_1)
     public void btn_capturar_1(){
 
+        botao = new botoes_captura(iv_digital_1);
+
         imagemcontroller = true;
         nitgen.onCapture1(10000);
 
@@ -149,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
     @OnClick(R.id.btn_capturar_2)
     public void btn_capturar_2(){
 
+        botao = new botoes_captura(iv_digital_2);
         imagemcontroller = false;
         nitgen.onCapture2(10000);
 
@@ -164,10 +170,17 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
         nitgen.openDevice();
 
 
-
-
-
     }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -184,6 +197,8 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+
 
     @Override
     public void onDeviceConnected() {
@@ -203,14 +218,14 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
     public void onCapture(NBioBSPJNI.CAPTURED_DATA capturedData) {
         if (capturedData.getImage() != null) {
             runOnUiThread(() -> {
-                if (imagemcontroller) {
-                    iv_digital_1.setImageBitmap(capturedData.getImage());
-                } else {
-                    iv_digital_2.setImageBitmap(capturedData.getImage());
-                }
+
+            botao.setarImagem(botao.img,capturedData);
+
+
             });
         }
     }
+
 
     @Override
     public void onDeviceMessage(String msg) {
@@ -244,10 +259,21 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
     @Override
     public void showLoading() {
 
+        if (sampleDialogFragment == null) {
+            sampleDialogFragment = new SampleDialogFragment();
+        }
+        sampleDialogFragment.show(getFragmentManager(), "DIALOG_TYPE_PROGRESS");
     }
+
+
+
 
     @Override
     public void hideLoading() {
+
+        if (sampleDialogFragment != null && "DIALOG_TYPE_PROGRESS".equals(sampleDialogFragment.getTag())) {
+            sampleDialogFragment.dismiss();
+        }
 
     }
 
@@ -258,6 +284,11 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View {
 
     @Override
     public void setRAWButton(boolean enable) {
+
+    }
+
+    @Override
+    public void onClickStopBtn(DialogFragment dialogFragment) {
 
     }
 }
