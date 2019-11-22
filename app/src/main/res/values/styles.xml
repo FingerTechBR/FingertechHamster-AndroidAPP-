@@ -12,11 +12,13 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="fg_button">
+    <style name="fg_button" parent="ThemeOverlay.AppCompat">
         <item name="android:background">@color/colorPrimary</item>
+        <item name="android:onClick">@color/colorPrimary</item>
+
         <item name="android:textColor">@color/colorButtonText</item>
         <item name="android:textStyle">bold</item>
-
+        <item name="colorButtonNormal">#FFFF</item>
 
 
     </style>
