@@ -109,7 +109,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/btn_state"
                     android:text="Captura 1" />
 
                 <Space
@@ -123,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/btn_state"
                     android:text="Captura 2" />
             </LinearLayout>
 
@@ -142,7 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/btn_state"
                     android:text="AutoOn 1" />
 
                 <Space
@@ -156,7 +156,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/button_shape"
+                    android:background="@drawable/btn_state"
                     android:text="AutoOn 4" />
             </LinearLayout>
         </LinearLayout>

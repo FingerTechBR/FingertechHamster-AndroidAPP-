@@ -2,6 +2,10 @@
 <resources>
     <color name="colorPrimary">#004791</color>
     <color name="colorPrimaryDark">#004791</color>
+    <color name="colorOnClick">#86C2FF</color>
+    <color name="colorDisabledbutton">#E2E9EE</color>
+    <color name="colorDisabledbuttontext">#646262</color>
+
     <color name="colorAccent">#D81B60</color>
     <color name="colorButtonText">#FAFAFA</color>
 
