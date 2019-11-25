@@ -1,6 +1,7 @@
 package com.fingertech.fingertechcapture;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -13,6 +14,7 @@ import com.nitgen.SDK.AndroidBSP.Trace;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.logging.Logger;
 
 public class Nitgen  {
 
@@ -448,6 +450,7 @@ public class Nitgen  {
     Thread authCaptureThread;
 
     public void onAuthCapture1(){
+
         try {
             if(authCaptureThread != null && authCaptureThread.isAlive()){
                 bAutoOn = false;
@@ -456,12 +459,16 @@ public class Nitgen  {
             bAutoOn = true;
             authCaptureThread = new Thread(() -> {
                 while (bAutoOn) {
+                    Log.e("thead", "thread1");
                     byte[] bFingerExist = new byte[1];
                     bFingerExist[0] = 0;
                     bsp.CheckFinger(bFingerExist);
 
+
                     if (bFingerExist[0] == 1) {
-                        //onCapture1(1000);
+                        Log.e("thead", "capture");
+                        onCapture1(10000);
+
                     }
                     try {
                         Thread.sleep(500);
