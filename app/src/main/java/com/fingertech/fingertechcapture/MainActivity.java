@@ -3,6 +3,7 @@ package com.fingertech.fingertechcapture;
 import android.Manifest;
 import android.app.DialogFragment;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,15 +37,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MainActivity extends AppCompatActivity implements Nitgen.View, SampleDialogFragment.SampleDialogListener {
+public class MainActivity extends AppCompatActivity implements Nitgen.View  {
+
+
+
+    protected Drawable mExpandDrawable;
+
 
     private AppBarConfiguration mAppBarConfiguration;
     private Nitgen nitgen;
+    /*
+
     private botoes_captura botao = new botoes_captura(null);
     private DialogFragment sampleDialogFragment;
 
@@ -62,19 +71,13 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View, Samp
     @BindView(R.id.btn_autoOn_1) Button btn_autoOn_1;
     @BindView(R.id.btn_autoOn_2) Button btn_autoOn_2;
 
-
     @BindView(R.id.btn_iniciar_dispositivo)  Button btn_iniciar_dispositivo;
-
-
     //txt
     @BindView(R.id.txt_sdk_verssao) TextView txt_sdk_verssao;
 
 
 
-
-
-
-
+     */
 
 
 
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View, Samp
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        //ButterKnife.bind(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -112,22 +115,30 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View, Samp
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
+        nitgen = new Nitgen(this, this);
         //personalizado
 
+        /*
 
         onCheckPermission();
         //btn_captura.setEnabled(false);
-        nitgen = new Nitgen(this, this);
+
         //botao.mudarvisibilidadebotao(botoesenables);
 
 
-      botoesenables =  Arrays.asList(btn_capturar_1, btn_capturar_2, btn_autoOn_1, btn_autoOn_2);
+         botoesenables =  Arrays.asList(btn_capturar_1, btn_capturar_2, btn_autoOn_1, btn_autoOn_2);
 
         botao.mudarvisibilidadebotao(botoesenables, this);
 
+*/
+
+
+
 
     }
+
+
+
 
 
 
@@ -153,15 +164,69 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View, Samp
         }
     }
 
+    @Override
+    public void onDeviceConnected() {
+
+    }
+
+    @Override
+    public void onDeviceDisconnected() {
+
+    }
+
+    @Override
+    public void onCapture(NBioBSPJNI.CAPTURED_DATA capturedData) {
+
+    }
+
+    @Override
+    public void onDeviceMessage(String msg) {
+
+    }
+
+    @Override
+    public void onInforMessage(String msg) {
+
+    }
+
+    @Override
+    public void onVersion(String msg) {
+
+    }
+
+    @Override
+    public void showToast(String msg) {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void setISOButton(boolean enable) {
+
+    }
+
+    @Override
+    public void setRAWButton(boolean enable) {
+
+    }
 
 
+
+    /*
 
     @OnClick(R.id.btn_capturar_1)
     public void btn_capturar_1(){
 
         botao = new botoes_captura(iv_digital_1);
-
-
         nitgen.onCapture1(10000);
 
     }
@@ -170,7 +235,6 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View, Samp
     public void btn_capturar_2(){
 
         botao = new botoes_captura(iv_digital_2);
-
         nitgen.onCapture2(10000);
 
 
@@ -185,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View, Samp
         nitgen.openDevice();
 
 
-        botao.mudarvisibilidadebotao(botoesenables, this);
+
 
 
     }
@@ -193,20 +257,34 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View, Samp
 
 
 
+
+
+
+    @OnClick(R.id.btn_autoOn_1)
+    public void Btn_autoOn_1(){
+
+        botao = new botoes_captura(iv_digital_1);
+        sampleDialogFragment = new SampleDialogFragment();
+        sampleDialogFragment.show(getFragmentManager(), "DIALOG_TYPE_STOP");
+        sampleDialogFragment.setCancelable(false);
+        nitgen.onAuthCapture1();
+
+
+    }
 
     @OnClick(R.id.btn_autoOn_2)
     public void Btn_autoOn_2(){
 
 
-        botao.mudarvisibilidadebotao(botoesenables, this);
-        Log.w("button activity", String.valueOf(btn_capturar_1.getId()));
-        Toast.makeText(this,"rodando",Toast.LENGTH_SHORT).show();
-        btn_capturar_1.setEnabled(false);
+        botao = new botoes_captura(iv_digital_2);
+        sampleDialogFragment = new SampleDialogFragment();
+        sampleDialogFragment.show(getFragmentManager(), "DIALOG_TYPE_STOP");
+        sampleDialogFragment.setCancelable(false);
+        nitgen.onAuthCapture1();
+
 
 
     }
-
-
 
 
 
@@ -235,14 +313,14 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View, Samp
         hideLoading();
 
         btn_iniciar_dispositivo.setText("Fechar dispositivo");
-        //btn_capturar_1.setEnabled(true);
-        //btn_capturar_2.setEnabled(true);
+        botao.mudarvisibilidadebotao(botoesenables, this);
 
     }
 
     @Override
     public void onDeviceDisconnected() {
         hideLoading();
+        botao.mudarvisibilidadebotao(botoesenables, this);
         btn_iniciar_dispositivo.setText("Abrir dispositivo");
 
     }
@@ -324,4 +402,7 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View, Samp
     public void onClickStopBtn(DialogFragment dialogFragment) {
 
     }
+
+    */
+
 }
