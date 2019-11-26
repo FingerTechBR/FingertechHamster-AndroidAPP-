@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <ScrollView
-        android:layout_width="416dp"
+        android:layout_width="0dp"
         android:layout_height="675dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/nav_host_fragment"
@@ -90,13 +90,13 @@
 
                 <Button
                     android:id="@+id/btn_capturar_1"
-                    android:theme="@style/fg_button"
                     style="@style/fg_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/btn_state"
-                    android:text="Captura 1" />
+                    android:text="Captura 1"
+                    android:theme="@style/fg_button" />
 
                 <Space
                     android:layout_width="wrap_content"

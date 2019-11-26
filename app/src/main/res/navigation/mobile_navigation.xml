@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.fingertech.fingertechcapture.ui.gallery.GalleryFragment"
+        android:name="com.fingertech.fingertechcapture.ui.gallery.CadastroFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_cadastro" />
 
     <fragment
         android:id="@+id/nav_slideshow"

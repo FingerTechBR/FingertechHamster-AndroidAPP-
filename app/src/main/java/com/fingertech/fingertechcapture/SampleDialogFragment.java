@@ -5,21 +5,40 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
+
+
 
 public class SampleDialogFragment  extends DialogFragment {
 
     ProgressDialog progressDialog;
+    SampleDialogListener sampleDialogListener;
+    View view;
+    Activity activity;
 
     public interface SampleDialogListener{
 
-        public void onClickStopBtn(DialogFragment dialogFragment);
+        public void onClickStopBtn();
 
     }
 
-    SampleDialogListener sampleDialogListener;
 
+    public void setView(SampleDialogListener sampleDialogListener){
+        this.sampleDialogListener = sampleDialogListener;
+    }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try{
+            sampleDialogListener = (SampleDialogListener)context;
+        }catch(ClassCastException e){
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -51,8 +70,14 @@ public class SampleDialogFragment  extends DialogFragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder
                     .setTitle("AUTO ON")
-                    .setPositiveButton("STOP", (dialog, which) -> sampleDialogListener.onClickStopBtn(SampleDialogFragment.this));
+                    .setPositiveButton("STOP", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    sampleDialogListener.onClickStopBtn();
+                                }
+                            }
 
+                    );
             return builder.create();
         }
 
