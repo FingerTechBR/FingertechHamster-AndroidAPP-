@@ -16,7 +16,9 @@ import androidx.annotation.NonNull;
 import android.app.DialogFragment;
 
 import androidx.fragment.app.Fragment;
-import android.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -39,7 +41,7 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
 
     private Nitgen nitgen;
     private botoes_captura botao = new botoes_captura(null);
-    private DialogFragment sampleDialogFragment;
+    private SampleDialogFragment sampleDialogFragment;
 
 
     List<Button> botoesenables;
@@ -71,6 +73,7 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
         ButterKnife.bind(this,root);
 
 
+
         //final TextView textView = root.findViewById(R.id.text_home);
         homeViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -89,20 +92,11 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
         nitgen = new Nitgen( this, getContext());
         //onCheckPermission();
         //btn_captura.setEnabled(false);
-
         //botao.mudarvisibilidadebotao(botoesenables);
-
 
         botoesenables =  Arrays.asList(btn_capturar_1, btn_capturar_2, btn_autoOn_1, btn_autoOn_2);
 
         botao.mudarvisibilidadebotao(botoesenables, getActivity());
-
-
-
-
-
-
-
 
         return root;
     }
@@ -133,10 +127,6 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
 
         nitgen.openDevice();
 
-
-
-
-
     }
 
 
@@ -148,10 +138,12 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
     @OnClick(R.id.btn_autoOn_1)
     public void Btn_autoOn_1(){
 
-        DialogFragment dialogFragment = new DialogFragment();
+
+
         botao = new botoes_captura(iv_digital_1);
-        sampleDialogFragment =  new  SampleDialogFragment();
-        sampleDialogFragment.show(this.getActivity().getFragmentManager(),"DIALOG_TYPE_STOP");
+        sampleDialogFragment =  new SampleDialogFragment();
+        sampleDialogFragment.setView(this);
+        sampleDialogFragment.show(getActivity().getFragmentManager(), "DIALOG_TYPE_STOP");
         sampleDialogFragment.setCancelable(false);
         nitgen.onAuthCapture1();
 
@@ -164,6 +156,7 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
 
         botao = new botoes_captura(iv_digital_2);
         sampleDialogFragment = new SampleDialogFragment();
+        sampleDialogFragment.setView(this);
         sampleDialogFragment.show(getActivity().getFragmentManager(), "DIALOG_TYPE_STOP");
         sampleDialogFragment.setCancelable(false);
         nitgen.onAuthCapture1();
@@ -217,7 +210,7 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
     @Override
     public void onInforMessage(String msg) {
         getActivity().runOnUiThread(() -> {
-            Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
         });
     }
     @Override
@@ -233,7 +226,7 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
     public void showToast(String msg) {
         getActivity().runOnUiThread(() -> {
 
-            Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
 
         });
     }
@@ -271,7 +264,7 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
 
 
     @Override
-    public void onClickStopBtn(DialogFragment dialogFragment) {
+    public void onClickStopBtn() {
         Toast.makeText(getActivity(),"onstopclick",Toast.LENGTH_SHORT).show();
         hideLoading();
         nitgen.onCaptureCancel();
