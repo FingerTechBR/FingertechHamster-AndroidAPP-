@@ -23,16 +23,17 @@ public class DBCore extends SQLiteOpenHelper {
     }
 
 
+
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
         sqLiteDatabase.execSQL("create table "+TABELA+ "(" +
-                ID+ "INTEGER PRIMARY KEY AUTOINCReMENT," +
-                NOME +"TEXT," +
-                TELEFONE+ "TEXT," +
-                FOTO+ "TEXT," +
-                DIGITAL+ "TEXT" +")");
-
+                ID+ " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                NOME +" TEXT," +
+                TELEFONE+ " TEXT," +
+                FOTO+ " TEXT," +
+                DIGITAL+ " TEXT" +")");
     }
 
     @Override
