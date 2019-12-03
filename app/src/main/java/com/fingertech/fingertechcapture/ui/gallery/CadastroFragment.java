@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -51,6 +52,7 @@ public class CadastroFragment extends Fragment implements permissoes {
     ImageView cadastro_iv_foto;
 
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     // permissoes requeridas aqui
 
@@ -77,10 +79,7 @@ public class CadastroFragment extends Fragment implements permissoes {
 */
 
         solicita_permissao sp = new solicita_permissao(this::permissoesnecessarias);
-
         sp.solicitarpermissao(getActivity());
-
-
         return root;
     }
 
@@ -91,12 +90,14 @@ public class CadastroFragment extends Fragment implements permissoes {
     @OnClick(R.id.cadastro_iv_foto)
     public void clickfoto(){
         capturarFoto();
+
     }
 
-    public final String TAG = "cadastrofoto";
+   ;
     public void capturarFoto(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
+
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             // Create the File where the photo should go
             File photoFile = null;
@@ -109,35 +110,34 @@ public class CadastroFragment extends Fragment implements permissoes {
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(getActivity().getBaseContext(),
-                        getActivity().getBaseContext().getPackageName()+".provider",
+                        getActivity().getBaseContext().getPackageName()+".fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, 1);
-                Log.e("foto2",photoURI.toString());
+                //Log.e("foto2",photoFile.toString());
             }
 
         }
     }
 
-    String currentPhotoPath;
 
+
+    String currentPhotoPath;
     private File createImageFile() throws IOException {
         // Create an image file name
-
-        //File direct = new File(Environment.getExternalStorageDirectory() + "/fingertech4/fingertech2");
-
-
-
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir =  getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);;
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES+"/fingertech");
+        File dir = new File(storageDir.toString());
+
+        if(!dir.exists()) dir.mkdirs();
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
-
         );
-        Log.e("foto",image.getAbsolutePath().toString());
+
+
 
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
@@ -145,33 +145,38 @@ public class CadastroFragment extends Fragment implements permissoes {
     }
 
 
-    public void salvarFoto(){
 
 
 
-      //  File imagem = new File(dir.getPath() + "/" + System.currentTimeMillis() + ".jpg");
-        //uri  = Uri.fromFile(imagem);
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = cadastro_iv_foto.getWidth();
+        int targetH = cadastro_iv_foto.getHeight();
 
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
 
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
 
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
 
-
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        cadastro_iv_foto.setImageBitmap(bitmap);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
         if(requestCode == 1 && resultCode == RESULT_OK){
-
-            Bundle extras = data.getExtras();
-            //Bitmap imageBitmap = (Bitmap) extras.get("data");
-
-            //cadastro_iv_foto.setImageBitmap(imageBitmap);
-
+            setPic();
         }
-
-
-
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
