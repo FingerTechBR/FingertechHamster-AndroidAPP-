@@ -19,6 +19,7 @@ public class DBConnect {
 
 
     public void salvarUsuario(Usuario usuario){
+
         ContentValues values = new ContentValues();
         values.put("nome", usuario.getNome());
         values.put("endereco", usuario.getEndereco());
@@ -27,6 +28,8 @@ public class DBConnect {
         values.put("foto", usuario.getFoto());
 
         db.insert("usuario",null,values);
-
     }
+
+
+
 }
