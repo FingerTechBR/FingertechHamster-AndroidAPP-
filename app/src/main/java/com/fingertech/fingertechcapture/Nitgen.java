@@ -14,7 +14,6 @@ import com.nitgen.SDK.AndroidBSP.Trace;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.logging.Logger;
 
 public class Nitgen  {
 
@@ -43,6 +42,11 @@ public class Nitgen  {
         this.view = view;
         this.context = context;
         initData();
+    }
+
+    public void setView(View v){
+        this.view =v;
+
     }
 
     public void initData() {

@@ -1,9 +1,7 @@
 package com.fingertech.fingertechcapture.ui.gallery;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -16,45 +14,58 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
+
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import com.fingertech.fingertechcapture.MainActivity;
+import com.fingertech.fingertechcapture.Nitgen;
 import com.fingertech.fingertechcapture.R;
 import com.fingertech.fingertechcapture.Utils.solicita_permissao;
+import com.fingertech.fingertechcapture.botoes.botoes_captura;
 import com.fingertech.fingertechcapture.interfaces.permissoes;
+import com.nitgen.SDK.AndroidBSP.NBioBSPJNI;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+
 import java.util.Date;
-import java.util.List;
+
 
 import static android.app.Activity.RESULT_OK;
-import static androidx.core.content.FileProvider.getUriForFile;
 
-public class CadastroFragment extends Fragment implements permissoes {
+
+public class CadastroFragment extends Fragment implements permissoes, Nitgen.View {
 
     private CadasatroViewModel cadasatroViewModel;
+    private Nitgen nitgen;
+    private botoes_captura botao;
+
+
     @BindView(R.id.cadasatro_et_nome)
     EditText cadastro_et_nome;
 
     @BindView(R.id.cadastro_iv_foto)
     ImageView cadastro_iv_foto;
 
+    @BindView(R.id.cadastro_iv_digital)
+    ImageView cadastro_iv_digital;
+
+
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    // permissoes requeridas aqui
+
 
 
 
@@ -69,23 +80,35 @@ public class CadastroFragment extends Fragment implements permissoes {
         View root = inflater.inflate(R.layout.fragment_cadastro, container, false);
 
         ButterKnife.bind(this,root);
-
-/*
-        if((ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED )
-                || ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},0);
-        }
-*/
-
         solicita_permissao sp = new solicita_permissao(this::permissoesnecessarias);
         sp.solicitarpermissao(getActivity());
+       nitgen = MainActivity.nitgen;
+       nitgen.setView(this);
+
+
+
         return root;
     }
 
 
 
 
+
+
+
+
+
+    @OnClick(R.id.cadastro_iv_digital)
+    public void clickDigital(){
+        //nitgen.openDevice();
+         nitgen.onCapture1(10000);
+        botao = new botoes_captura(cadastro_iv_digital);
+        Toast.makeText(getContext(),"click",Toast.LENGTH_SHORT).show();
+
+
+
+
+    }
 
     @OnClick(R.id.cadastro_iv_foto)
     public void clickfoto(){
@@ -116,7 +139,6 @@ public class CadastroFragment extends Fragment implements permissoes {
                 startActivityForResult(takePictureIntent, 1);
                 //Log.e("foto2",photoFile.toString());
             }
-
         }
     }
 
@@ -136,9 +158,6 @@ public class CadastroFragment extends Fragment implements permissoes {
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-
-
-
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
@@ -189,6 +208,66 @@ public class CadastroFragment extends Fragment implements permissoes {
                 Manifest.permission.CAMERA
         };
          return APPPERMISSOES;
+
+    }
+
+    @Override
+    public void onDeviceConnected() {
+
+    }
+
+    @Override
+    public void onDeviceDisconnected() {
+
+    }
+
+    @Override
+    public void onCapture(NBioBSPJNI.CAPTURED_DATA capturedData) {
+
+
+        //botao.setarImagem(capturedData);
+
+
+    }
+
+    @Override
+    public void onDeviceMessage(String msg) {
+
+    }
+
+    @Override
+    public void onInforMessage(String msg) {
+        Toast.makeText(getContext(),msg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onVersion(String msg) {
+
+    }
+
+    @Override
+    public void showToast(String msg) {
+        Toast.makeText(getContext(),msg,Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void setISOButton(boolean enable) {
+
+    }
+
+    @Override
+    public void setRAWButton(boolean enable) {
 
     }
 }
