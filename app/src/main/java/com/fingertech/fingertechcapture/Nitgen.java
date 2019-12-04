@@ -411,6 +411,7 @@ public class Nitgen  {
                 return;
             }
 
+
             NBioBSPJNI.NIMPORTRAWSET rawSet = bsp.new NIMPORTRAWSET();
             bsp.ImportISOToRaw(ISOBuffer, rawSet);
 
@@ -434,6 +435,9 @@ public class Nitgen  {
             nCapturedRawWidth2 = rawSet.RawData[0].ImgWidth;
             nCapturedRawHeight2 = rawSet.RawData[0].ImgHeight;
 
+            NBioBSPJNI.FIR_TEXTENCODE digitalstring = bsp.new FIR_TEXTENCODE();
+            bsp.GetTextFIRFromHandle(hCapturedFIR,digitalstring);
+            view.digitalText(digitalstring.TextFIR);
             view.onInforMessage(msg);
         }
 
@@ -787,5 +791,6 @@ public class Nitgen  {
         void hideLoading();
         void setISOButton(boolean enable);
         void setRAWButton(boolean enable);
+        void digitalText(String digital);
     }
 }

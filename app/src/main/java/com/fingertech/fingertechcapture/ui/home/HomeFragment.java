@@ -11,18 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
+
 import androidx.annotation.NonNull;
-
-import android.app.DialogFragment;
-
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
 import com.fingertech.fingertechcapture.MainActivity;
 import com.fingertech.fingertechcapture.Nitgen;
 import com.fingertech.fingertechcapture.R;
@@ -76,25 +68,27 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-         root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        this.root = inflater.inflate(R.layout.fragment_home, container, false);
+         initConfigs();
+
+        return root;
+    }
+
+
+
+    //aqui configurações iniciais
+    public void initConfigs(){
+
 
         ButterKnife.bind(this,root);
-
-        //final TextView textView = root.findViewById(R.id.text_home);
-
-        //nitgen = new Nitgen( this, getActivity().getApplicationContext());
         nitgen = MainActivity.nitgen;
         nitgen.setView(this);
-
         botoesenables =  Arrays.asList(btn_capturar_1, btn_capturar_2, btn_autoOn_1, btn_autoOn_2);
-
         botao.mudarvisibilidadebotao(botoesenables, getActivity());
         solicita_permissao sp = new solicita_permissao(this::permissoesnecessarias);
 
-
-        return root;
     }
 
 
@@ -147,7 +141,6 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
 
     @OnClick(R.id.btn_autoOn_2)
     public void Btn_autoOn_2(){
-
 
         botao = new botoes_captura(iv_digital_2);
         sampleDialogFragment = new SampleDialogFragment();
@@ -254,6 +247,11 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
 
     @Override
     public void setRAWButton(boolean enable) {
+
+    }
+
+    @Override
+    public void digitalText(String digital) {
 
     }
 

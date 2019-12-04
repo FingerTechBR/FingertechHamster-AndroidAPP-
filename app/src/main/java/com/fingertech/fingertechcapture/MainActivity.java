@@ -158,25 +158,10 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View  {
 
     }
 
+    @Override
+    public void digitalText(String digital) {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 
     @Override
