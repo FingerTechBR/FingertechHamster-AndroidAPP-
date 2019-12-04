@@ -7,6 +7,6 @@ import com.nitgen.SDK.AndroidBSP.NBioBSPJNI;
 
 public interface imagem_digital {
 
-    void setarImagem(ImageView img, NBioBSPJNI.CAPTURED_DATA capturedData);
+    void setarImagem(NBioBSPJNI.CAPTURED_DATA capturedData);
 
 }

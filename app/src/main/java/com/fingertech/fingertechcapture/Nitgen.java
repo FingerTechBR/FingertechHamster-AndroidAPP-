@@ -14,7 +14,6 @@ import com.nitgen.SDK.AndroidBSP.Trace;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.logging.Logger;
 
 public class Nitgen  {
 
@@ -43,6 +42,11 @@ public class Nitgen  {
         this.view = view;
         this.context = context;
         initData();
+    }
+
+    public void setView(View v){
+        this.view =v;
+
     }
 
     public void initData() {
@@ -407,6 +411,7 @@ public class Nitgen  {
                 return;
             }
 
+
             NBioBSPJNI.NIMPORTRAWSET rawSet = bsp.new NIMPORTRAWSET();
             bsp.ImportISOToRaw(ISOBuffer, rawSet);
 
@@ -430,6 +435,9 @@ public class Nitgen  {
             nCapturedRawWidth2 = rawSet.RawData[0].ImgWidth;
             nCapturedRawHeight2 = rawSet.RawData[0].ImgHeight;
 
+            NBioBSPJNI.FIR_TEXTENCODE digitalstring = bsp.new FIR_TEXTENCODE();
+            bsp.GetTextFIRFromHandle(hCapturedFIR,digitalstring);
+            view.digitalText(digitalstring.TextFIR);
             view.onInforMessage(msg);
         }
 
@@ -783,5 +791,6 @@ public class Nitgen  {
         void hideLoading();
         void setISOButton(boolean enable);
         void setRAWButton(boolean enable);
+        void digitalText(String digital);
     }
 }

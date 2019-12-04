@@ -51,33 +51,8 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View  {
 
 
     private AppBarConfiguration mAppBarConfiguration;
-    private Nitgen nitgen;
-    /*
+    public static Nitgen nitgen;
 
-    private botoes_captura botao = new botoes_captura(null);
-    private DialogFragment sampleDialogFragment;
-
-    List<Button> botoesenables;
-
-
-    //imgview
-    @BindView(R.id.iv_digital_1) ImageView iv_digital_1;
-    @BindView(R.id.iv_digital_2) ImageView iv_digital_2;
-
-    //botões
-    @BindView(R.id.btn_capturar_1) Button btn_capturar_1;
-    @BindView(R.id.btn_capturar_2) Button btn_capturar_2;
-
-    @BindView(R.id.btn_autoOn_1) Button btn_autoOn_1;
-    @BindView(R.id.btn_autoOn_2) Button btn_autoOn_2;
-
-    @BindView(R.id.btn_iniciar_dispositivo)  Button btn_iniciar_dispositivo;
-    //txt
-    @BindView(R.id.txt_sdk_verssao) TextView txt_sdk_verssao;
-
-
-
-     */
 
 
 
@@ -115,25 +90,7 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View  {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        nitgen = new Nitgen(this, this);
-        //personalizado
-
-        /*
-
-        onCheckPermission();
-        //btn_captura.setEnabled(false);
-
-        //botao.mudarvisibilidadebotao(botoesenables);
-
-
-         botoesenables =  Arrays.asList(btn_capturar_1, btn_capturar_2, btn_autoOn_1, btn_autoOn_2);
-
-        botao.mudarvisibilidadebotao(botoesenables, this);
-
-*/
-
-
-
+        this.nitgen = new Nitgen(this, this);
 
     }
 
@@ -144,25 +101,7 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View  {
 
 
 
-    public void onCheckPermission(){
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ArrayList<String> permissionArray = new ArrayList<>();
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                permissionArray.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            }
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                permissionArray.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            }
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
-                permissionArray.add(Manifest.permission.CAMERA);
-            }
-            if (permissionArray.size() > 0) {
-                String[] strArr = new String[permissionArray.size()];
-                strArr = permissionArray.toArray(strArr);
-                ActivityCompat.requestPermissions(this, strArr, 0);
-            }
-        }
-    }
+
 
     @Override
     public void onDeviceConnected() {
@@ -219,75 +158,10 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View  {
 
     }
 
-
-
-    /*
-
-    @OnClick(R.id.btn_capturar_1)
-    public void btn_capturar_1(){
-
-        botao = new botoes_captura(iv_digital_1);
-        nitgen.onCapture1(10000);
+    @Override
+    public void digitalText(String digital) {
 
     }
-
-    @OnClick(R.id.btn_capturar_2)
-    public void btn_capturar_2(){
-
-        botao = new botoes_captura(iv_digital_2);
-        nitgen.onCapture2(10000);
-
-
-
-    }
-
-    @OnClick(R.id.btn_iniciar_dispositivo)
-    public void btn_iniciar_dispositivo(){
-
-
-
-        nitgen.openDevice();
-
-
-
-
-
-    }
-
-
-
-
-
-
-
-    @OnClick(R.id.btn_autoOn_1)
-    public void Btn_autoOn_1(){
-
-        botao = new botoes_captura(iv_digital_1);
-        sampleDialogFragment = new SampleDialogFragment();
-        sampleDialogFragment.show(getFragmentManager(), "DIALOG_TYPE_STOP");
-        sampleDialogFragment.setCancelable(false);
-        nitgen.onAuthCapture1();
-
-
-    }
-
-    @OnClick(R.id.btn_autoOn_2)
-    public void Btn_autoOn_2(){
-
-
-        botao = new botoes_captura(iv_digital_2);
-        sampleDialogFragment = new SampleDialogFragment();
-        sampleDialogFragment.show(getFragmentManager(), "DIALOG_TYPE_STOP");
-        sampleDialogFragment.setCancelable(false);
-        nitgen.onAuthCapture1();
-
-
-
-    }
-
-
-
 
 
     @Override
@@ -306,103 +180,6 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View  {
 
 
 
-    @Override
-    public void onDeviceConnected() {
 
-
-        hideLoading();
-
-        btn_iniciar_dispositivo.setText("Fechar dispositivo");
-        botao.mudarvisibilidadebotao(botoesenables, this);
-
-    }
-
-    @Override
-    public void onDeviceDisconnected() {
-        hideLoading();
-        botao.mudarvisibilidadebotao(botoesenables, this);
-        btn_iniciar_dispositivo.setText("Abrir dispositivo");
-
-    }
-
-    @Override
-    public void onCapture(NBioBSPJNI.CAPTURED_DATA capturedData) {
-        if (capturedData.getImage() != null) {
-            runOnUiThread(() -> {
-
-            botao.setarImagem(botao.getImg(),capturedData);
-
-
-            });
-        }
-    }
-
-
-    @Override
-    public void onDeviceMessage(String msg) {
-
-    }
-
-    @Override
-    public void onInforMessage(String msg) {
-        runOnUiThread(() -> {
-            Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
-        });
-    }
-    @Override
-    public void onVersion(String msg) {
-        runOnUiThread(() -> {
-            txt_sdk_verssao.setText(msg);
-        });
-
-
-    }
-
-    @Override
-    public void showToast(String msg) {
-        runOnUiThread(() -> {
-
-            Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
-
-        });
-    }
-
-    @Override
-    public void showLoading() {
-
-        if (sampleDialogFragment == null) {
-            sampleDialogFragment = new SampleDialogFragment();
-        }
-        sampleDialogFragment.show(getFragmentManager(), "DIALOG_TYPE_PROGRESS");
-    }
-
-
-
-
-    @Override
-    public void hideLoading() {
-
-        if (sampleDialogFragment != null && "DIALOG_TYPE_PROGRESS".equals(sampleDialogFragment.getTag())) {
-            sampleDialogFragment.dismiss();
-        }
-
-    }
-
-    @Override
-    public void setISOButton(boolean enable) {
-
-    }
-
-    @Override
-    public void setRAWButton(boolean enable) {
-
-    }
-
-    @Override
-    public void onClickStopBtn(DialogFragment dialogFragment) {
-
-    }
-
-    */
 
 }

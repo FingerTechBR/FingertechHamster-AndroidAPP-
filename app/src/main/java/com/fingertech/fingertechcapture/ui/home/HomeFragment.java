@@ -1,5 +1,6 @@
 package com.fingertech.fingertechcapture.ui.home;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,22 +11,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
+
 import androidx.annotation.NonNull;
-
-import android.app.DialogFragment;
-
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
+import com.fingertech.fingertechcapture.MainActivity;
 import com.fingertech.fingertechcapture.Nitgen;
 import com.fingertech.fingertechcapture.R;
 import com.fingertech.fingertechcapture.SampleDialogFragment;
+import com.fingertech.fingertechcapture.Utils.solicita_permissao;
 import com.fingertech.fingertechcapture.botoes.botoes_captura;
+import com.fingertech.fingertechcapture.interfaces.permissoes;
 import com.nitgen.SDK.AndroidBSP.NBioBSPJNI;
 
 import java.util.Arrays;
@@ -35,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class HomeFragment extends Fragment implements SampleDialogFragment.SampleDialogListener, Nitgen.View {
+public class HomeFragment extends Fragment implements SampleDialogFragment.SampleDialogListener, Nitgen.View, permissoes {
 
     private HomeViewModel homeViewModel;
 
@@ -64,42 +60,37 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
     //txt
     @BindView(R.id.txt_sdk_verssao) TextView txt_sdk_verssao;
 
+
+
+
+
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-         root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        ButterKnife.bind(this,root);
-
-
-
-        //final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-
-                ///code
-
-
-
-            }
-
-        });
-
-
-
-        nitgen = new Nitgen( this, getContext());
-        //onCheckPermission();
-        //btn_captura.setEnabled(false);
-        //botao.mudarvisibilidadebotao(botoesenables);
-
-        botoesenables =  Arrays.asList(btn_capturar_1, btn_capturar_2, btn_autoOn_1, btn_autoOn_2);
-
-        botao.mudarvisibilidadebotao(botoesenables, getActivity());
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        this.root = inflater.inflate(R.layout.fragment_home, container, false);
+         initConfigs();
 
         return root;
     }
+
+
+
+    //aqui configurações iniciais
+    public void initConfigs(){
+
+
+        ButterKnife.bind(this,root);
+        nitgen = MainActivity.nitgen;
+        nitgen.setView(this);
+        botoesenables =  Arrays.asList(btn_capturar_1, btn_capturar_2, btn_autoOn_1, btn_autoOn_2);
+        botao.mudarvisibilidadebotao(botoesenables, getActivity());
+        solicita_permissao sp = new solicita_permissao(this::permissoesnecessarias);
+
+    }
+
 
 
     @OnClick(R.id.btn_capturar_1)
@@ -122,8 +113,6 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
 
     @OnClick(R.id.btn_iniciar_dispositivo)
     public void btn_iniciar_dispositivo(){
-
-
 
         nitgen.openDevice();
 
@@ -152,7 +141,6 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
 
     @OnClick(R.id.btn_autoOn_2)
     public void Btn_autoOn_2(){
-
 
         botao = new botoes_captura(iv_digital_2);
         sampleDialogFragment = new SampleDialogFragment();
@@ -194,7 +182,7 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
         if (capturedData.getImage() != null) {
             getActivity().runOnUiThread(() -> {
 
-                botao.setarImagem(botao.getImg(),capturedData);
+                botao.setarImagem(capturedData);
 
 
             });
@@ -262,6 +250,11 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
 
     }
 
+    @Override
+    public void digitalText(String digital) {
+
+    }
+
 
     @Override
     public void onClickStopBtn() {
@@ -271,4 +264,17 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
 
 
     }
+
+    @Override
+    public String[] permissoesnecessarias() {
+
+        String[] APPPERMISSIONS = {
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA,
+        };
+        return APPPERMISSIONS;
+    }
 }
+
+

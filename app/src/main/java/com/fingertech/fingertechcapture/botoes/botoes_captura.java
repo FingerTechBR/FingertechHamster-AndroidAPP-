@@ -17,12 +17,7 @@ public class botoes_captura  extends Activity implements imagem_digital {
 
 
     private ImageView img;
-
-
-
     private Activity activity;
-
-
 
 
     public Activity getActivity() {
@@ -55,11 +50,7 @@ public class botoes_captura  extends Activity implements imagem_digital {
 
     //mudar status dos botoes
     public void mudarvisibilidadebotao(List<Button> bt, Activity activity){
-
-       
         for(int c = 0; c < bt.size(); c++){
-
-
 
            Button button = bt.get(c);
             Log.w("button", String.valueOf(button.getId()));
@@ -76,7 +67,7 @@ public class botoes_captura  extends Activity implements imagem_digital {
 
 
     @Override
-    public void setarImagem(ImageView img, NBioBSPJNI.CAPTURED_DATA capturedData) {
+    public void setarImagem(NBioBSPJNI.CAPTURED_DATA capturedData) {
 
         img.setImageBitmap(capturedData.getImage());
 
