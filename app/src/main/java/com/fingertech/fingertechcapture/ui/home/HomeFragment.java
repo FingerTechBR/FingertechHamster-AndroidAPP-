@@ -2,7 +2,6 @@ package com.fingertech.fingertechcapture.ui.home;
 
 import android.Manifest;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,7 @@ import com.fingertech.fingertechcapture.Nitgen;
 import com.fingertech.fingertechcapture.R;
 import com.fingertech.fingertechcapture.SampleDialogFragment;
 import com.fingertech.fingertechcapture.Utils.solicita_permissao;
-import com.fingertech.fingertechcapture.botoes.botoes_captura;
+import com.fingertech.fingertechcapture.comportamentos_componentes.botoes_captura;
 import com.fingertech.fingertechcapture.interfaces.permissoes;
 import com.nitgen.SDK.AndroidBSP.NBioBSPJNI;
 
@@ -30,6 +29,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.fingertech.fingertechcapture.Nitgen.status;
 
 public class HomeFragment extends Fragment implements SampleDialogFragment.SampleDialogListener, Nitgen.View, permissoes {
 
@@ -83,10 +84,18 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
 
 
         ButterKnife.bind(this,root);
+        botoesenables =  Arrays.asList(btn_capturar_1, btn_capturar_2, btn_autoOn_1, btn_autoOn_2);
         nitgen = MainActivity.nitgen;
         nitgen.setView(this);
-        botoesenables =  Arrays.asList(btn_capturar_1, btn_capturar_2, btn_autoOn_1, btn_autoOn_2);
-        botao.mudarvisibilidadebotao(botoesenables, getActivity());
+        if(!status) {
+
+            botao.mudarvisibilidadebotao(botoesenables, getActivity());
+        }else{
+            btn_iniciar_dispositivo.setText("Fechar Dispositivo");
+        }
+
+
+
         solicita_permissao sp = new solicita_permissao(this::permissoesnecessarias);
 
     }

@@ -1,9 +1,7 @@
-package com.fingertech.fingertechcapture.botoes;
+package com.fingertech.fingertechcapture.comportamentos_componentes;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -11,7 +9,6 @@ import com.fingertech.fingertechcapture.interfaces.imagem_digital;
 import com.nitgen.SDK.AndroidBSP.NBioBSPJNI;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 public class botoes_captura  extends Activity implements imagem_digital {
 
