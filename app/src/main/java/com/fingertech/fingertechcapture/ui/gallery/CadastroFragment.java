@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +28,7 @@ import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 import com.fingertech.fingertechcapture.Crud.DBConnect;
 import com.fingertech.fingertechcapture.MainActivity;
@@ -37,13 +36,14 @@ import com.fingertech.fingertechcapture.Models.Usuario;
 import com.fingertech.fingertechcapture.Nitgen;
 import com.fingertech.fingertechcapture.R;
 import com.fingertech.fingertechcapture.Utils.solicita_permissao;
-import com.fingertech.fingertechcapture.botoes.botoes_captura;
+import com.fingertech.fingertechcapture.comportamentos_componentes.botoes_captura;
+import com.fingertech.fingertechcapture.comportamentos_componentes.campos_texto;
 import com.fingertech.fingertechcapture.interfaces.permissoes;
+import com.google.android.material.textfield.TextInputLayout;
 import com.nitgen.SDK.AndroidBSP.NBioBSPJNI;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -65,23 +65,31 @@ public class CadastroFragment extends Fragment implements permissoes, Nitgen.Vie
 
     @BindView(R.id.cadastro_iv_foto)
     ImageView cadastro_iv_foto;
-
     @BindView(R.id.cadastro_iv_digital)
     ImageView cadastro_iv_digital;
+
+
 
     @BindView(R.id.cadastro_btn_salvar)
     Button cadastro_btn_salvar;
 
 
+
     @BindView(R.id.cadasatro_et_nome)
     TextView cadasatro_et_nome;
-
     @BindView(R.id.cadasatro_et__endereco)
     TextView cadasatro_et__endereco;
-
-    @BindView(R.id.cadasatro_et_tel)
+    @BindView(R.id.cadasatro_et_telefone)
     TextView cadasatro_et_tel;
 
+
+
+    @BindView(R.id.cadastro_til_nome)
+    TextInputLayout cadastro_til_nome;
+    @BindView(R.id.cadastro_til_endereco)
+    TextInputLayout cadastro_til_endereco;
+    @BindView(R.id.cadastro_til_telefone)
+    TextInputLayout cadastro_til_telefone;
 
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -109,6 +117,7 @@ public class CadastroFragment extends Fragment implements permissoes, Nitgen.Vie
         nitgen = MainActivity.nitgen;
         nitgen.setView(this);
         dbConnect = new DBConnect(getContext());
+        campos_texto cp = new campos_texto(cadasatro_et_nome);
 
     }
 
@@ -155,12 +164,13 @@ public class CadastroFragment extends Fragment implements permissoes, Nitgen.Vie
 
 
 
+    //caminho + foto
     private String currentPhotoPath;
     private String foto_digital;
     private String[] fotodigital = new String[2];
+    //caminho
+    private File storageDir;
 
-
-    File storageDir;
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -178,9 +188,7 @@ public class CadastroFragment extends Fragment implements permissoes, Nitgen.Vie
         currentPhotoPath = image.getAbsolutePath();
         fotodigital[0] = storageDir.getAbsolutePath();
         fotodigital[1] = imageFileName;
-        Log.i("foto caminho", "createImageFile: "+ imageFileName);
-        Log.i("foto caminho path", "createImageFile: "+ image.getAbsolutePath());
-        saveFoto();
+
 
 
         return image;
@@ -209,11 +217,8 @@ public class CadastroFragment extends Fragment implements permissoes, Nitgen.Vie
         foto_digital = file.getAbsolutePath();
         //cadastro_iv_foto.setImageBitmap(bitmap);
         Log.i("foto", "saveFoto: "+ file.getAbsolutePath());
-
-
-
-
     }
+
 
 
 
@@ -246,9 +251,17 @@ public class CadastroFragment extends Fragment implements permissoes, Nitgen.Vie
 
 
 
-    @OnClick(R.id.cadastro_btn_salvar)
-    public void salvarDb(){
 
+    @OnClick(R.id.cadastro_btn_salvar)
+    public void salvarDb() {
+
+        if(cadasatro_et_nome.getText().toString().isEmpty()){
+            cadasatro_et_nome.setError("não pod estar vazio");
+            cadastro_til_nome.setError("Nome não pode estar Vazio");
+
+            return;
+        }
+        //saveFoto();
         Usuario user = new Usuario();
         user.setNome(cadasatro_et_nome.getText().toString());
         user.setEndereco(cadasatro_et__endereco.getText().toString());
@@ -258,7 +271,7 @@ public class CadastroFragment extends Fragment implements permissoes, Nitgen.Vie
         user.setDigital(digitalstring);
 
 
-        long result = dbConnect.salvarUsuario(user);
+        long result = 0;//dbConnect.salvarUsuario(user);
 
 
         if(result > 0 ){
@@ -268,27 +281,26 @@ public class CadastroFragment extends Fragment implements permissoes, Nitgen.Vie
             Toast.makeText(getContext(), "Não foi possível salvar usuario",Toast.LENGTH_SHORT).show();
         }
 
-
-
-
-
     }
 
     public void limparareas(){
 
-        cadasatro_et_nome.clearComposingText();
-        cadasatro_et__endereco.clearComposingText();
-        cadasatro_et_tel.clearComposingText();
-        cadastro_iv_foto = null;
-        cadastro_iv_digital = null;
+        cadasatro_et_nome.setText(null);
+        cadasatro_et__endereco.setText(null);
+        cadasatro_et_tel.setText(null);
+        cadastro_iv_foto.setImageResource(R.mipmap.ic_launcher_foreground);
+        cadastro_iv_digital.setImageResource(R.mipmap.ic_launcher_foreground);
     }
 
 
 
 
 
+    @OnTextChanged(R.id.cadasatro_et_nome)
+    public void changedTextOnEditPhone() {
 
 
+    }
 
 
     @Override
@@ -373,4 +385,6 @@ public class CadastroFragment extends Fragment implements permissoes, Nitgen.Vie
     public void digitalText(String digital) {
         this.digitalstring = digital;
     }
+
+
 }

@@ -2,11 +2,7 @@ package com.fingertech.fingertechcapture;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.ImageView;
 
-import com.fingertech.fingertechcapture.botoes.botoes_captura;
-import com.fingertech.fingertechcapture.interfaces.imagem_digital;
 import com.nitgen.SDK.AndroidBSP.NBioBSPJNI;
 import com.nitgen.SDK.AndroidBSP.StaticVals;
 import com.nitgen.SDK.AndroidBSP.Trace;
@@ -35,6 +31,8 @@ public class Nitgen  {
     private int QUALITY_LIMIT = 60;
     private int nFIQ = 0;
     private String msg = "";
+
+    public static boolean status = false;
     private boolean bAutoOn = false;
     private Context context;
 
@@ -67,8 +65,10 @@ public class Nitgen  {
 
     public void clearData(){
         if (bsp != null) {
+
             bsp.dispose();
             bsp = null;
+            status = false;
         }
     }
 
@@ -312,6 +312,14 @@ public class Nitgen  {
             nCapturedRawWidth1 = rawSet.RawData[0].ImgWidth;
             nCapturedRawHeight1 = rawSet.RawData[0].ImgHeight;
 
+
+
+            NBioBSPJNI.FIR_TEXTENCODE digitalstring = bsp.new FIR_TEXTENCODE();
+            bsp.GetTextFIRFromHandle(hCapturedFIR,digitalstring);
+            view.digitalText(digitalstring.TextFIR);
+            Log.i("oncapture", "onCapture1: "+digitalstring.TextFIR);
+
+
             view.onInforMessage(msg);
         }
 
@@ -435,9 +443,7 @@ public class Nitgen  {
             nCapturedRawWidth2 = rawSet.RawData[0].ImgWidth;
             nCapturedRawHeight2 = rawSet.RawData[0].ImgHeight;
 
-            NBioBSPJNI.FIR_TEXTENCODE digitalstring = bsp.new FIR_TEXTENCODE();
-            bsp.GetTextFIRFromHandle(hCapturedFIR,digitalstring);
-            view.digitalText(digitalstring.TextFIR);
+
             view.onInforMessage(msg);
         }
 
@@ -530,9 +536,11 @@ public class Nitgen  {
 
     public void openDevice(){
         if (bsp.isConnected) {
+            status = false;
             bsp.releaseDevice();
         } else {
             view.showLoading();
+            status = true;
             bsp.OpenDevice();
         }
     }
