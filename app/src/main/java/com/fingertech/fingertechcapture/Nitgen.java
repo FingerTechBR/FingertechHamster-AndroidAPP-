@@ -15,7 +15,7 @@ public class Nitgen  {
 
     private NBioBSPJNI bsp;
     private NBioBSPJNI.Export exportEngine;
-    private NBioBSPJNI.IndexSearch indexSearch;
+    private static NBioBSPJNI.IndexSearch indexSearch;
     private byte[] byTemplate1;
     private byte[] byTemplate2;
 
@@ -33,6 +33,7 @@ public class Nitgen  {
     private String msg = "";
 
     public static boolean status = false;
+
     private boolean bAutoOn = false;
     private Context context;
 
@@ -775,6 +776,27 @@ public class Nitgen  {
             NBioBSPJNI.IndexSearch.SAMPLE_INFO sampleInfo = indexSearch.new SAMPLE_INFO();
 
             indexSearch.AddFIR(inputFIR, Integer.parseInt(id), sampleInfo);
+            if (bsp.IsErrorOccured()) {
+                view.showToast(id + " Add Failure");
+            } else {
+                view.showToast(id + " Add Success");
+            }
+        }
+    }
+    public void onAddFIR(String digital, long id) {
+
+        NBioBSPJNI.FIR_TEXTENCODE textencode = bsp.new FIR_TEXTENCODE();
+        if (bsp.IsErrorOccured()) {
+            msg = "NBioBSP Capture Error: " + bsp.GetErrorCode();
+        } else {
+            textencode.TextFIR = digital;
+            NBioBSPJNI.INPUT_FIR inputFIR;
+            inputFIR = bsp.new INPUT_FIR();
+            inputFIR.SetTextFIR(textencode);
+
+            NBioBSPJNI.IndexSearch.SAMPLE_INFO sampleInfo = indexSearch.new SAMPLE_INFO();
+
+            indexSearch.AddFIR(inputFIR, (int) id, sampleInfo);
             if (bsp.IsErrorOccured()) {
                 view.showToast(id + " Add Failure");
             } else {

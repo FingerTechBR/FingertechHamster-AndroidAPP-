@@ -65,4 +65,18 @@ public class Usuario {
     public void setFoto(String foto) {
         this.foto = foto;
     }
+
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", endereco='" + endereco + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", digital='" + digital + '\'' +
+                ", digital_caminho='" + digital_caminho + '\'' +
+                ", foto='" + foto + '\'' +
+                '}';
+    }
 }

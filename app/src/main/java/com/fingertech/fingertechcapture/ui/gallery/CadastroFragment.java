@@ -198,6 +198,7 @@ public class CadastroFragment extends Fragment implements permissoes, Nitgen.Vie
         File dir = new File(storageDir.toString());
 
         if(!dir.exists()) dir.mkdirs();
+
         File image = new  File(storageDir.getAbsolutePath()+"/"+imageFileName+".jpg");
 
         //File arquivo = new File(storageDir.getAbsolutePath()+"/"+imageFileName+".jpg");
