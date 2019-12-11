@@ -94,7 +94,6 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
             btn_iniciar_dispositivo.setText("Fechar Dispositivo");
         }
         solicita_permissao sp = new solicita_permissao(this::permissoesnecessarias);
-
     }
 
 
@@ -120,14 +119,9 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
     @OnClick(R.id.btn_iniciar_dispositivo)
     public void btn_iniciar_dispositivo(){
 
+
         nitgen.openDevice();
-
     }
-
-
-
-
-
 
 
     @OnClick(R.id.btn_autoOn_1)

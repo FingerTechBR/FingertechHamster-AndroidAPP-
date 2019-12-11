@@ -318,7 +318,7 @@ public class Nitgen  {
             NBioBSPJNI.FIR_TEXTENCODE digitalstring = bsp.new FIR_TEXTENCODE();
             bsp.GetTextFIRFromHandle(hCapturedFIR,digitalstring);
             view.digitalText(digitalstring.TextFIR);
-            Log.i("oncapture", "onCapture1: "+digitalstring.TextFIR);
+            //Log.i("oncapture", "onCapture1: "+digitalstring.TextFIR);
 
 
             view.onInforMessage(msg);
@@ -474,7 +474,7 @@ public class Nitgen  {
             bAutoOn = true;
             authCaptureThread = new Thread(() -> {
                 while (bAutoOn) {
-                    Log.e("thead", "thread1");
+                    //Log.e("thead", "thread1");
                     byte[] bFingerExist = new byte[1];
                     bFingerExist[0] = 0;
                     bsp.CheckFinger(bFingerExist);
@@ -740,6 +740,7 @@ public class Nitgen  {
 
         bsp.Capture(NBioBSPJNI.FIR_PURPOSE.ENROLL, hCapturedFIR, timeout, hAuditFIR, capturedData);
 
+
         if (bsp.IsErrorOccured()) {
             msg = "NBioBSP Capture Error: " + bsp.GetErrorCode();
         } else {
@@ -751,7 +752,7 @@ public class Nitgen  {
             indexSearch.Identify(inputFIR, 1, fpInfo, 2000);
 
             if (fpInfo.ID != 0) {
-                view.showToast(fpInfo.ID + " Identify Success");
+                view.showToast(String.valueOf(fpInfo.ID));
             } else {
                 view.showToast("Identify Failure");
             }
@@ -777,19 +778,21 @@ public class Nitgen  {
 
             indexSearch.AddFIR(inputFIR, Integer.parseInt(id), sampleInfo);
             if (bsp.IsErrorOccured()) {
-                view.showToast(id + " Add Failure");
+                //view.showToast(id + " Add Failure");
             } else {
-                view.showToast(id + " Add Success");
+                //view.showToast(id + " Add Success");
             }
         }
     }
-    public void onAddFIR(String digital, long id) {
-
+    public void onAddFIRstring(String digital, long id) {
+        Log.i("onAddFIRstring", "fir onadd e id"+digital+" "+ id);
         NBioBSPJNI.FIR_TEXTENCODE textencode = bsp.new FIR_TEXTENCODE();
         if (bsp.IsErrorOccured()) {
             msg = "NBioBSP Capture Error: " + bsp.GetErrorCode();
         } else {
             textencode.TextFIR = digital;
+            Log.i("onAddFIRstring", "usuario  add: "+textencode.TextFIR);
+            Log.i("onAddFIRstring", "usuario  add: digital addfir "+digital);
             NBioBSPJNI.INPUT_FIR inputFIR;
             inputFIR = bsp.new INPUT_FIR();
             inputFIR.SetTextFIR(textencode);
@@ -798,9 +801,10 @@ public class Nitgen  {
 
             indexSearch.AddFIR(inputFIR, (int) id, sampleInfo);
             if (bsp.IsErrorOccured()) {
-                view.showToast(id + " Add Failure");
+                //view.showToast(id + " Add Failure");
             } else {
-                view.showToast(id + " Add Success");
+                //view.showToast(id + " Add Success");
+
             }
         }
     }

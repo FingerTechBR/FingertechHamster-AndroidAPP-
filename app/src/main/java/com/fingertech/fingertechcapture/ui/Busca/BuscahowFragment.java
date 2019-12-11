@@ -1,12 +1,19 @@
 package com.fingertech.fingertechcapture.ui.Busca;
 
+import android.app.AlertDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -22,6 +29,9 @@ import com.fingertech.fingertechcapture.R;
 import com.fingertech.fingertechcapture.Utils.solicita_permissao;
 import com.nitgen.SDK.AndroidBSP.NBioBSPJNI;
 
+import org.w3c.dom.Text;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,10 +45,37 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
     private BuscahowViewModel slideshowViewModel;
     private Nitgen nitgen;
     private View root;
+    private AlertDialog dialog;
+
+
+
+    private List<Usuario> users;
 
 
     @BindView(R.id.busca_btn_buscardigital)
     Button busca_btn_buscardigital;
+
+
+    @BindView(R.id.busca_iv_digital)
+    ImageView busca_iv_digital;
+    @BindView(R.id.busca_iv_foto)
+    ImageView busca_iv_foto;
+
+    @BindView(R.id.busca_et_nome)
+    TextView busca_et_nome;
+
+    @BindView(R.id.busca_et__endereco)
+    TextView busca_et__endereco;
+
+    @BindView(R.id.busca_et_telefone)
+    TextView busca_et_telefone;
+
+
+
+
+
+
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,24 +93,90 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
         ButterKnife.bind(this,root);
         nitgen = MainActivity.nitgen;
         nitgen.setView(this);
+        popularDB();
 
     }
 
 
     @OnClick(R.id.busca_btn_buscardigital)
     public void busca_btn_buscardigital(){
-        popularDB();
+        AlertDialog.Builder msgbox = new AlertDialog.Builder(getActivity());
+        msgbox.setTitle("Ensira a digital");
+        msgbox.setIcon(android.R.drawable.ic_menu_search);
+        msgbox.setMessage("Ensira a digital");
+        dialog = msgbox.show();
+        TextView msgdialog = (TextView) dialog.findViewById(android.R.id.message);
+        msgdialog.setGravity(Gravity.CENTER);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        enserirDigital();
+
+
+
     }
 
     public void popularDB(){
 
         DBConnect dbConnect = new DBConnect(getContext());
-        List<Usuario> users = new ArrayList<>();
+        users = new ArrayList<>();
         users = dbConnect.buscaTodos();
         for(Usuario user : users){
-            Log.i("usuario", "popularDB: "+ user.toString());
-            nitgen.onAddFIR(user.getDigital(),user.getId());
+            if(user.getDigital() != null)
+            nitgen.onAddFIRstring(user.getDigital(),user.getId());
+
         }
+    }
+
+
+    public void enserirDigital(){
+
+
+        //nitgen.onAuthCapture1();
+        nitgen.identify(5000);
+
+
+    }
+
+    private void setPic(ImageView imageView, String foto) {
+        // Get the dimensions of the View
+
+        File caminho = new File(foto);
+        int targetW = imageView.getWidth();
+        int targetH = imageView.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+        Bitmap bitmap = BitmapFactory.decodeFile(caminho.getAbsolutePath(), bmOptions);
+        imageView.setImageBitmap(bitmap);
+    }
+
+
+
+    public void preenchercampos(String id){
+
+        for(Usuario user : users){
+            if(user.getId() == Integer.valueOf(id)){
+                setPic(busca_iv_foto,user.getFoto());
+                setPic(busca_iv_digital,user.getDigital_caminho());
+                busca_et_nome.setText(user.getNome());
+                busca_et__endereco.setText(user.getEndereco());
+                busca_et_telefone.setText(user.getTelefone());
+            }
+        }
+
     }
 
     @Override
@@ -88,6 +191,9 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
 
     @Override
     public void onCapture(NBioBSPJNI.CAPTURED_DATA capturedData) {
+
+        dialog.dismiss();
+        nitgen.onCaptureCancel();
 
     }
 
@@ -109,6 +215,12 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
     @Override
     public void showToast(String msg) {
 
+        getActivity().runOnUiThread(() -> {
+            dialog.dismiss();
+            Toast.makeText(getActivity(),"usuario "+msg,Toast.LENGTH_LONG).show();
+            preenchercampos(msg);
+
+        });
     }
 
     @Override
@@ -134,5 +246,8 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
     @Override
     public void digitalText(String digital) {
 
+        getActivity().runOnUiThread(() -> {
+        //Toast.makeText(getActivity(),digital,Toast.LENGTH_LONG).show();
+        });
     }
 }
