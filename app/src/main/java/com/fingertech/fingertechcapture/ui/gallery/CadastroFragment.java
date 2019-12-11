@@ -313,7 +313,7 @@ public class CadastroFragment extends Fragment implements permissoes, Nitgen.Vie
                 resultado = false;
              }
             else if(foto_digital == null || currentPhotoPath == null){
-                Log.i("verifica", "verificacomponentes: "+foto_digital +" e "+ currentPhotoPath);
+
                 Toast.makeText(getContext(),"Foto ou Digital Vazios",Toast.LENGTH_LONG).show();
                 resultado = false;
             }

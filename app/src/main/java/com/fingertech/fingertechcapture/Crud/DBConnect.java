@@ -27,6 +27,7 @@ public class DBConnect {
 
 
         ContentValues values = new ContentValues();
+
         values.put("nome", usuario.getNome());
         values.put("endereco", usuario.getEndereco());
         values.put("telefone", usuario.getTelefone());
@@ -49,6 +50,7 @@ public class DBConnect {
 
             do{
                 Usuario userretorno = new Usuario();
+                userretorno.setId(Integer.valueOf(cursor.getString(cursor.getColumnIndex("_id"))));
                 userretorno.setNome(cursor.getString(cursor.getColumnIndex("nome")));
                 userretorno.setEndereco(cursor.getString(cursor.getColumnIndex("endereco")));
                 userretorno.setTelefone(cursor.getString(cursor.getColumnIndex("telefone")));
