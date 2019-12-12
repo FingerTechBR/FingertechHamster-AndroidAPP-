@@ -141,6 +141,11 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View  {
 
     }
 
+    @Override
+    public void resultadoIndexSearch(long id) {
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

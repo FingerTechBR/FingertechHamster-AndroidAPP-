@@ -18,7 +18,7 @@ public class DBCore extends SQLiteOpenHelper {
     private static final String DIGITAL_FOTO = "digital_FOTO";
     private static final String DIGITAL = "digital";
     private static final String FOTO = "foto";
-    private static final int VERSAO = 2;
+    private static final int VERSAO = 3;
 
     public DBCore(Context context) {
         super(context, NOME_BANCO, null, VERSAO);
