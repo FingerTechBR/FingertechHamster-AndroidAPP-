@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,30 +14,30 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.fingertech.fingertechcapture.Crud.DBConnect;
+import com.fingertech.fingertechcapture.data.CRUD.DBConnect;
 import com.fingertech.fingertechcapture.MainActivity;
 import com.fingertech.fingertechcapture.Models.Usuario;
 import com.fingertech.fingertechcapture.Nitgen;
 import com.fingertech.fingertechcapture.R;
-import com.fingertech.fingertechcapture.Utils.solicita_permissao;
+import com.fingertech.fingertechcapture.data.Rest.RetrofitConfig;
+import com.fingertech.fingertechcapture.data.Rest.interfaces.POSTfacial;
 import com.nitgen.SDK.AndroidBSP.NBioBSPJNI;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class BuscahowFragment extends Fragment implements Nitgen.View {
 
@@ -46,10 +45,12 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
     private Nitgen nitgen;
     private View root;
     private AlertDialog dialog;
-
-
-
     private List<Usuario> users;
+
+    private RetrofitConfig retrofitConfig;
+
+    POSTfacial pf;
+
 
 
     @BindView(R.id.busca_btn_buscardigital)
@@ -93,8 +94,35 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
         ButterKnife.bind(this,root);
         nitgen = MainActivity.nitgen;
         nitgen.setView(this);
+        retrofitConfig = new RetrofitConfig();
         popularDB();
 
+        pf = retrofitConfig.retrofit.create(POSTfacial.class);
+
+
+
+
+    }
+
+    public void BuscarFacial(){
+        Call<Usuario> retornoPOST = pf.buscaFacial();
+
+        retornoPOST.enqueue(new Callback<Usuario>() {
+
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                if(!response.isSuccessful()){
+                    Log.i("TAG", "erro: "+ response.code());
+                }else {
+                    Usuario user = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+
+            }
+        });
     }
 
 
