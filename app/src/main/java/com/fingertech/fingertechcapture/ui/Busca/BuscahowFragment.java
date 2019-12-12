@@ -109,7 +109,6 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
         msgdialog.setGravity(Gravity.CENTER);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
-
         enserirDigital();
 
 
@@ -165,15 +164,16 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
 
 
 
-    public void preenchercampos(String id){
+    public void preenchercampos(long id){
 
         for(Usuario user : users){
-            if(user.getId() == Integer.valueOf(id)){
+            if(user.getId() == id){
                 setPic(busca_iv_foto,user.getFoto());
                 setPic(busca_iv_digital,user.getDigital_caminho());
                 busca_et_nome.setText(user.getNome());
                 busca_et__endereco.setText(user.getEndereco());
                 busca_et_telefone.setText(user.getTelefone());
+                return;
             }
         }
 
@@ -218,8 +218,6 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
         getActivity().runOnUiThread(() -> {
             dialog.dismiss();
             Toast.makeText(getActivity(),"usuario "+msg,Toast.LENGTH_LONG).show();
-            preenchercampos(msg);
-
         });
     }
 
@@ -250,4 +248,18 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
         //Toast.makeText(getActivity(),digital,Toast.LENGTH_LONG).show();
         });
     }
+
+    @Override
+    public void resultadoIndexSearch(long id) {
+
+        if(id < 0){
+            Toast.makeText(getActivity(),"Usuário não Encontrado",Toast.LENGTH_LONG).show();
+
+        }else{
+            preenchercampos(id);
+        }
+
+    }
+
+
 }

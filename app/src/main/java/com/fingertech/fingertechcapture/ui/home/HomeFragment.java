@@ -254,6 +254,11 @@ public class HomeFragment extends Fragment implements SampleDialogFragment.Sampl
 
     }
 
+    @Override
+    public void resultadoIndexSearch(long id) {
+
+    }
+
 
     @Override
     public void onClickStopBtn() {

@@ -430,5 +430,10 @@ public class CadastroFragment extends Fragment implements permissoes, Nitgen.Vie
         this.digitalstring = digital;
     }
 
+    @Override
+    public void resultadoIndexSearch(long id) {
+
+    }
+
 
 }

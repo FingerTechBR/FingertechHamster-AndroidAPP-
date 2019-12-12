@@ -752,9 +752,10 @@ public class Nitgen  {
             indexSearch.Identify(inputFIR, 1, fpInfo, 2000);
 
             if (fpInfo.ID != 0) {
-                view.showToast(String.valueOf(fpInfo.ID));
+
+                view.resultadoIndexSearch(fpInfo.ID);
             } else {
-                view.showToast("Identify Failure");
+                view.resultadoIndexSearch(-1);;
             }
         }
     }
@@ -826,5 +827,7 @@ public class Nitgen  {
         void setISOButton(boolean enable);
         void setRAWButton(boolean enable);
         void digitalText(String digital);
+        void resultadoIndexSearch(long id);
+
     }
 }
