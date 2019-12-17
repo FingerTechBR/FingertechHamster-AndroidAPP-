@@ -1,10 +1,11 @@
 package com.fingertech.fingertechcapture.ui.Busca;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.StrictMode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +19,14 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.fingertech.fingertechcapture.Utils.solicita_permissao;
 import com.fingertech.fingertechcapture.data.CRUD.DBConnect;
 import com.fingertech.fingertechcapture.MainActivity;
 import com.fingertech.fingertechcapture.Models.Usuario;
 import com.fingertech.fingertechcapture.Nitgen;
 import com.fingertech.fingertechcapture.R;
-import com.fingertech.fingertechcapture.data.Rest.RetrofitConfig;
-import com.fingertech.fingertechcapture.data.Rest.interfaces.POSTfacial;
+
+import com.fingertech.fingertechcapture.interfaces.permissoes;
 import com.nitgen.SDK.AndroidBSP.NBioBSPJNI;
 
 import java.io.File;
@@ -34,12 +36,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
-public class BuscahowFragment extends Fragment implements Nitgen.View {
+public class BuscahowFragment extends Fragment implements Nitgen.View, permissoes {
 
     private BuscahowViewModel slideshowViewModel;
     private Nitgen nitgen;
@@ -47,18 +45,14 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
     private AlertDialog dialog;
     private List<Usuario> users;
 
-    private RetrofitConfig retrofitConfig;
-
-    POSTfacial pf;
-
 
 
     @BindView(R.id.busca_btn_buscardigital)
     Button busca_btn_buscardigital;
 
-
     @BindView(R.id.busca_iv_digital)
     ImageView busca_iv_digital;
+
     @BindView(R.id.busca_iv_foto)
     ImageView busca_iv_foto;
 
@@ -74,14 +68,9 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
 
 
 
-
-
-
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
-                ViewModelProviders.of(this).get(BuscahowViewModel.class);
+        slideshowViewModel = ViewModelProviders.of(this).get(BuscahowViewModel.class);
         root = inflater.inflate(R.layout.fragment_busca, container, false);
         initConfig();
         return root;
@@ -91,39 +80,18 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
     public void initConfig(){
 
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        solicita_permissao sp = new solicita_permissao(this::permissoesnecessarias);
+        sp.solicitarpermissao(getActivity());
         ButterKnife.bind(this,root);
         nitgen = MainActivity.nitgen;
         nitgen.setView(this);
-        retrofitConfig = new RetrofitConfig();
         popularDB();
-
-        pf = retrofitConfig.retrofit.create(POSTfacial.class);
-
-
-
-
     }
 
-    public void BuscarFacial(){
-        Call<Usuario> retornoPOST = pf.buscaFacial();
 
-        retornoPOST.enqueue(new Callback<Usuario>() {
 
-            @Override
-            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                if(!response.isSuccessful()){
-                    Log.i("TAG", "erro: "+ response.code());
-                }else {
-                    Usuario user = response.body();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Usuario> call, Throwable t) {
-
-            }
-        });
-    }
 
 
     @OnClick(R.id.busca_btn_buscardigital)
@@ -138,9 +106,6 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         enserirDigital();
-
-
-
     }
 
     public void popularDB(){
@@ -151,7 +116,6 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
         for(Usuario user : users){
             if(user.getDigital() != null)
             nitgen.onAddFIRstring(user.getDigital(),user.getId());
-
         }
     }
 
@@ -159,9 +123,7 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
     public void enserirDigital(){
 
 
-        //nitgen.onAuthCapture1();
         nitgen.identify(5000);
-
 
     }
 
@@ -191,20 +153,18 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
     }
 
 
+    public void preenchercampos(long id) {
 
-    public void preenchercampos(long id){
-
-        for(Usuario user : users){
-            if(user.getId() == id){
-                setPic(busca_iv_foto,user.getFoto());
-                setPic(busca_iv_digital,user.getDigital_caminho());
+        for (Usuario user : users) {
+            if (user.getId() == id) {
+                setPic(busca_iv_foto, user.getFoto());
+                setPic(busca_iv_digital, user.getDigital_caminho());
                 busca_et_nome.setText(user.getNome());
                 busca_et__endereco.setText(user.getEndereco());
                 busca_et_telefone.setText(user.getTelefone());
                 return;
             }
         }
-
     }
 
     @Override
@@ -290,4 +250,16 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
     }
 
 
+    @Override
+    public String[] permissoesnecessarias() {
+
+        String[] APPPERMISSOES = {
+
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA,
+                Manifest.permission.INTERNET
+        };
+        return APPPERMISSOES;
+
+    }
 }
