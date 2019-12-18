@@ -1,4 +1,4 @@
-package com.fingertech.fingertechcapture.ui.gallery;
+package com.fingertech.fingertechcapture.ui.cadastro;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

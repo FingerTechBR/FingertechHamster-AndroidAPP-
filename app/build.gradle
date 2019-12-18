@@ -44,9 +44,8 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:3.12.2"
 
 
-
     implementation 'com.jakewharton:butterknife:10.2.0'
-    annotationProcessor  'com.jakewharton:butterknife-compiler:10.2.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
 
 
 }

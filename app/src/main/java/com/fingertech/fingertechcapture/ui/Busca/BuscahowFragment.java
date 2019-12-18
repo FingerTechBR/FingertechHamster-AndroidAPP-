@@ -77,6 +77,7 @@ public class BuscahowFragment extends Fragment implements Nitgen.View, permissoe
     }
 
 
+
     public void initConfig(){
 
 
