@@ -7,15 +7,27 @@ import android.util.Log;
 
 public class DBCore extends SQLiteOpenHelper {
 
+
+    //tabela 1
     private static final String NOME_BANCO = "Fingertech";
-    private static final String TABELA = "usuarios";
-    private static final String ID = "_id";
-    private static final String NOME = "nome";
-    private static final String ENDERECO = "endereco";
-    private static final String TELEFONE = "telefone";
-    private static final String DIGITAL_FOTO = "digital_FOTO";
-    private static final String DIGITAL = "digital";
-    private static final String FOTO = "foto";
+    public static final String TABELA = "usuarios";
+    public static final String ID = "_id";
+    public static final String NOME = "nome";
+    public static final String ENDERECO = "endereco";
+    public static final String TELEFONE = "telefone";
+    public static final String DIGITAL_FOTO = "digital_FOTO";
+    public static final String DIGITAL = "digital";
+    public static final String FOTO = "foto";
+    //fim tabela 1
+
+
+    //tabela 2
+    public static String TABELA2 = "Registro";
+    public static String REGISTRADO = "registrado";
+
+
+
+
     private static final int VERSAO = 3;
 
     public DBCore(Context context) {
@@ -36,7 +48,8 @@ public class DBCore extends SQLiteOpenHelper {
                 TELEFONE+ " TEXT," +
                 DIGITAL_FOTO+ " TEXT," +
                 DIGITAL+ " TEXT," +
-                FOTO+ " TEXT" +")");
+                FOTO+ " TEXT" +")"
+        );
     }
 
     @Override
