@@ -1,4 +1,4 @@
-package com.fingertech.fingertechcapture.ui.gallery;
+package com.fingertech.fingertechcapture.ui.cadastro;
 
 import android.Manifest;
 import android.content.Intent;
@@ -30,14 +30,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
-import com.fingertech.fingertechcapture.Crud.DBConnect;
+import com.fingertech.fingertechcapture.data.CRUD.DBConnect;
 import com.fingertech.fingertechcapture.MainActivity;
 import com.fingertech.fingertechcapture.Models.Usuario;
 import com.fingertech.fingertechcapture.Nitgen;
 import com.fingertech.fingertechcapture.R;
 import com.fingertech.fingertechcapture.Utils.solicita_permissao;
 import com.fingertech.fingertechcapture.comportamentos_componentes.botoes_captura;
-import com.fingertech.fingertechcapture.comportamentos_componentes.campos_texto;
 import com.fingertech.fingertechcapture.interfaces.permissoes;
 import com.google.android.material.textfield.TextInputLayout;
 import com.nitgen.SDK.AndroidBSP.NBioBSPJNI;
@@ -55,7 +54,6 @@ import java.util.List;
 
 
 import static android.app.Activity.RESULT_OK;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 
 public class CadastroFragment extends Fragment implements permissoes, Nitgen.View {

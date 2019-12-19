@@ -1,11 +1,11 @@
 package com.fingertech.fingertechcapture.ui.Busca;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
+import android.os.StrictMode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,49 +15,44 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.fingertech.fingertechcapture.Crud.DBConnect;
+import com.fingertech.fingertechcapture.Utils.solicita_permissao;
+import com.fingertech.fingertechcapture.data.CRUD.DBConnect;
 import com.fingertech.fingertechcapture.MainActivity;
 import com.fingertech.fingertechcapture.Models.Usuario;
 import com.fingertech.fingertechcapture.Nitgen;
 import com.fingertech.fingertechcapture.R;
-import com.fingertech.fingertechcapture.Utils.solicita_permissao;
-import com.nitgen.SDK.AndroidBSP.NBioBSPJNI;
 
-import org.w3c.dom.Text;
+import com.fingertech.fingertechcapture.interfaces.permissoes;
+import com.nitgen.SDK.AndroidBSP.NBioBSPJNI;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BuscahowFragment extends Fragment implements Nitgen.View {
+public class BuscahowFragment extends Fragment implements Nitgen.View, permissoes {
 
     private BuscahowViewModel slideshowViewModel;
     private Nitgen nitgen;
     private View root;
     private AlertDialog dialog;
-
-
-
     private List<Usuario> users;
+
 
 
     @BindView(R.id.busca_btn_buscardigital)
     Button busca_btn_buscardigital;
 
-
     @BindView(R.id.busca_iv_digital)
     ImageView busca_iv_digital;
+
     @BindView(R.id.busca_iv_foto)
     ImageView busca_iv_foto;
 
@@ -73,29 +68,31 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
 
 
 
-
-
-
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
-                ViewModelProviders.of(this).get(BuscahowViewModel.class);
+        slideshowViewModel = ViewModelProviders.of(this).get(BuscahowViewModel.class);
         root = inflater.inflate(R.layout.fragment_busca, container, false);
         initConfig();
         return root;
     }
 
 
+
     public void initConfig(){
 
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        solicita_permissao sp = new solicita_permissao(this::permissoesnecessarias);
+        sp.solicitarpermissao(getActivity());
         ButterKnife.bind(this,root);
         nitgen = MainActivity.nitgen;
         nitgen.setView(this);
         popularDB();
-
     }
+
+
+
 
 
     @OnClick(R.id.busca_btn_buscardigital)
@@ -110,9 +107,6 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         enserirDigital();
-
-
-
     }
 
     public void popularDB(){
@@ -123,7 +117,6 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
         for(Usuario user : users){
             if(user.getDigital() != null)
             nitgen.onAddFIRstring(user.getDigital(),user.getId());
-
         }
     }
 
@@ -131,9 +124,7 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
     public void enserirDigital(){
 
 
-        //nitgen.onAuthCapture1();
         nitgen.identify(5000);
-
 
     }
 
@@ -163,20 +154,18 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
     }
 
 
+    public void preenchercampos(long id) {
 
-    public void preenchercampos(long id){
-
-        for(Usuario user : users){
-            if(user.getId() == id){
-                setPic(busca_iv_foto,user.getFoto());
-                setPic(busca_iv_digital,user.getDigital_caminho());
+        for (Usuario user : users) {
+            if (user.getId() == id) {
+                setPic(busca_iv_foto, user.getFoto());
+                setPic(busca_iv_digital, user.getDigital_caminho());
                 busca_et_nome.setText(user.getNome());
                 busca_et__endereco.setText(user.getEndereco());
                 busca_et_telefone.setText(user.getTelefone());
                 return;
             }
         }
-
     }
 
     @Override
@@ -262,4 +251,16 @@ public class BuscahowFragment extends Fragment implements Nitgen.View {
     }
 
 
+    @Override
+    public String[] permissoesnecessarias() {
+
+        String[] APPPERMISSOES = {
+
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA,
+                Manifest.permission.INTERNET
+        };
+        return APPPERMISSOES;
+
+    }
 }

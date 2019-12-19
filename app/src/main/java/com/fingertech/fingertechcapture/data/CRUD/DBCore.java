@@ -1,11 +1,9 @@
-package com.fingertech.fingertechcapture.Crud;
+package com.fingertech.fingertechcapture.data.CRUD;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
-import androidx.annotation.Nullable;
 
 public class DBCore extends SQLiteOpenHelper {
 
