@@ -4,70 +4,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal|center_vertical"
     android:background="@drawable/teste5"
+    app:layout_anchorGravity="center_horizontal|center_vertical"
     tools:context=".Cadastro">
 
-    <EditText
-        android:id="@+id/login_txt_nome"
-        android:layout_width="294dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="304dp"
-        android:background="#77020202"
-        android:drawableLeft="@drawable/ic_person_black_34dp"
-        android:drawablePadding="10dip"
-        android:ems="10"
-        android:fontFamily="sans-serif"
-        android:hint="Digite seu nome"
-        android:includeFontPadding="false"
-        android:inputType="textPersonName"
-        android:paddingStart="10dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        android:textSize="24sp"
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/login_txt_email"
-        android:layout_width="294dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="24dp"
-        android:background="#77020202"
-        android:drawableLeft="@drawable/ic_email_black_34dp"
-        android:drawablePadding="10dip"
-        android:ems="10"
-        android:hint="Digite seu Email"
-        android:inputType="textPersonName"
-        android:paddingLeft="10dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_txt_nome" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="361dp"
-        android:layout_height="222dp"
-        android:layout_marginTop="72dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logoFingertech"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintVertical_bias="1.0">
 
-    <Button
-        android:id="@+id/login_btn_entrar"
-        android:layout_width="294dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="60dp"
-        android:background="#AD020202"
-        android:text="Entrar"
-        android:textColor="@android:color/white"
-        android:theme="@style/fg_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_txt_email" />
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="90dp"
+            app:srcCompat="@drawable/fingertechlo" />
+
+        <EditText
+            android:id="@+id/login_txt_email"
+            android:layout_width="294dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:background="#77020202"
+            android:drawableLeft="@drawable/ic_email_black_34dp"
+            android:drawablePadding="10dip"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Digite seu Email"
+            android:inputType="textPersonName"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/login_txt_nome"
+            android:layout_width="294dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="#77020202"
+            android:drawableLeft="@drawable/ic_person_black_34dp"
+            android:drawablePadding="10dip"
+            android:ems="10"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:hint="Digite seu nome"
+            android:includeFontPadding="false"
+            android:inputType="textPersonName"
+            android:paddingStart="10dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/login_btn_entrar"
+            android:layout_width="294dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="#AD020202"
+            android:text="Entrar"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:theme="@style/fg_button" />
+    </LinearLayout>
 
     />
 

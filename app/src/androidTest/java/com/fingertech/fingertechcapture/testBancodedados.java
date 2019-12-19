@@ -7,9 +7,11 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.fingertech.fingertechcapture.Models.Usuario;
 import com.fingertech.fingertechcapture.data.CRUD.DBConnect;
+import com.fingertech.fingertechcapture.Utils.JavaMail.envarEmail;
 
 import junit.framework.TestCase;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
@@ -19,7 +21,7 @@ public class testBancodedados  extends TestCase {
 
 
 
-
+/*
     @Test
     public  void testcheckdb(){
 
@@ -52,8 +54,6 @@ public class testBancodedados  extends TestCase {
         DBConnect dbConnect = new DBConnect(context);
 
         List<Usuario> users;
-
-
         users = dbConnect.buscaTodos();
 
         boolean result = users != null ? true : false;
@@ -82,14 +82,19 @@ public class testBancodedados  extends TestCase {
            }
 
        }
-
        assertTrue(resultado);
 
+    }
+*/
 
 
-
+    public void testEnviar_email(){
+        envarEmail envmail = new envarEmail(InstrumentationRegistry.getInstrumentation().getTargetContext(),"suporte@fingertech.com.br","Jnunit test automatizado de teste unitario", "corpo email");
+        assertTrue(envmail.enviarEmail());
 
     }
+
+
 
 
 }

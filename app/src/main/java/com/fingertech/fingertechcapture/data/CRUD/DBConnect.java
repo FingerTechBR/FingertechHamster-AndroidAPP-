@@ -27,14 +27,34 @@ public class DBConnect {
 
         ContentValues values = new ContentValues();
 
-        values.put("nome", usuario.getNome());
-        values.put("endereco", usuario.getEndereco());
-        values.put("telefone", usuario.getTelefone());
-        values.put("digital_FOTO", usuario.getDigital_caminho());
-        values.put("digital", usuario.getDigital());
-        values.put("foto", usuario.getFoto());
+        values.put(DBCore.NOME, usuario.getNome());
+        values.put(DBCore.ENDERECO, usuario.getEndereco());
+        values.put(DBCore.TELEFONE, usuario.getTelefone());
+        values.put(DBCore.DIGITAL_FOTO, usuario.getDigital_caminho());
+        values.put(DBCore.DIGITAL, usuario.getDigital());
+        values.put(DBCore.FOTO, usuario.getFoto());
 
-        return db.insert("usuarios",null,values);
+        return db.insert(DBCore.TABELA,null,values);
+
+    }
+
+    public long salvarRegistro(boolean registro){
+
+        ContentValues values = new ContentValues();
+        values.put(DBCore.REGISTRADO, registro);
+        return db.insert(DBCore.TABELA2, null, values);
+
+
+    }
+
+
+    public boolean checkRegistro(){
+
+        boolean resultado;
+
+        Cursor cursor = db.rawQuery("select "+ DBCore.REGISTRADO, null);
+
+        return cursor.moveToFirst();
 
     }
 
@@ -49,13 +69,13 @@ public class DBConnect {
 
             do{
                 Usuario userretorno = new Usuario();
-                userretorno.setId(Integer.valueOf(cursor.getString(cursor.getColumnIndex("_id"))));
-                userretorno.setNome(cursor.getString(cursor.getColumnIndex("nome")));
-                userretorno.setEndereco(cursor.getString(cursor.getColumnIndex("endereco")));
-                userretorno.setTelefone(cursor.getString(cursor.getColumnIndex("telefone")));
-                userretorno.setDigital(cursor.getString(cursor.getColumnIndex("digital")));
-                userretorno.setDigital_caminho(cursor.getString(cursor.getColumnIndex("digital_FOTO")));
-                userretorno.setFoto(cursor.getString(cursor.getColumnIndex("foto")));
+                userretorno.setId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(DBCore.ID))));
+                userretorno.setNome(cursor.getString(cursor.getColumnIndex(DBCore.NOME)));
+                userretorno.setEndereco(cursor.getString(cursor.getColumnIndex(DBCore.ENDERECO)));
+                userretorno.setTelefone(cursor.getString(cursor.getColumnIndex(DBCore.TELEFONE)));
+                userretorno.setDigital(cursor.getString(cursor.getColumnIndex(DBCore.DIGITAL)));
+                userretorno.setDigital_caminho(cursor.getString(cursor.getColumnIndex(DBCore.DIGITAL_FOTO)));
+                userretorno.setFoto(cursor.getString(cursor.getColumnIndex(DBCore.FOTO)));
                 users.add(userretorno);
 
             }while (cursor.moveToNext());

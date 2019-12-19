@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/FingertechHamster.iml" filepath="$PROJECT_DIR$/FingertechHamster.iml" />
       <module fileurl="file://$PROJECT_DIR$/NBioBSPJNI_v2.0.0.3(11)/NBioBSPJNI_v2.0.0.3(11).iml" filepath="$PROJECT_DIR$/NBioBSPJNI_v2.0.0.3(11)/NBioBSPJNI_v2.0.0.3(11).iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mail/mail.iml" filepath="$PROJECT_DIR$/mail/mail.iml" />
     </modules>
   </component>
 </project>
