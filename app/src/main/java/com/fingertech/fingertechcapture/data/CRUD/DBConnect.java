@@ -44,16 +44,13 @@ public class DBConnect {
         values.put(DBCore.REGISTRADO, registro);
         return db.insert(DBCore.TABELA2, null, values);
 
-
     }
 
 
     public boolean checkRegistro(){
 
         boolean resultado;
-
         Cursor cursor = db.rawQuery("select "+ DBCore.REGISTRADO, null);
-
         return cursor.moveToFirst();
 
     }
@@ -79,8 +76,6 @@ public class DBConnect {
                 users.add(userretorno);
 
             }while (cursor.moveToNext());
-
-
         db.close();
         cursor.close();
         return users;
