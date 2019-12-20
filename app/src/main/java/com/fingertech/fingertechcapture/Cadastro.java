@@ -87,7 +87,6 @@ public class Cadastro extends AppCompatActivity implements permissoes {
 
 
         Context context = this;
-
         SharedPreferences.Editor editor = sharedPreference.edit();
         editor.putBoolean("cadastrado", true);
         editor.commit();
