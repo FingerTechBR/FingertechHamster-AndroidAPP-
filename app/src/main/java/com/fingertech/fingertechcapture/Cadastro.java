@@ -92,7 +92,7 @@ public class Cadastro extends AppCompatActivity implements permissoes {
         editor.putBoolean("cadastrado", true);
         editor.commit();
         String corpoemail = " Nome: "+ login_txt_nome.getText()+"\n "
-                + " Email: "+ login_txt_email.getText();
+                          + " Email: "+ login_txt_email.getText();
         envarEmail envmail = new envarEmail(getApplicationContext(), this,"suporte@fingertech.com.br","Aplicativo Fingertech", corpoemail);
         envmail.execute();
 

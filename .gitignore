@@ -48,7 +48,7 @@ captures/
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
-/app/src/main/java/com/fingertech/fingertechcapture/Utils/JavaMail/login_e_senha.java
+
 # Google Services (e.g. APIs or Firebase)
 google-services.json
 
@@ -63,3 +63,6 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
+
+
+app/src/main/java/com/fingertech/fingertechcapture/Utils/JavaMail/login_e_senha.java
