@@ -65,4 +65,5 @@ fastlane/test_output
 fastlane/readme.md
 
 
-login_e_senha.java
+login_e_senha.*
+app/src/main/java/com/fingertech/fingertechcapture/Utils/JavaMail/login_e_senha.java
