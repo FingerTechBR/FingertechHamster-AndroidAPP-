@@ -1,8 +1,14 @@
 package com.fingertech.fingertechcapture.Utils.JavaMail;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.Toast;
+
+import com.fingertech.fingertechcapture.Cadastro;
+import com.fingertech.fingertechcapture.MainActivity;
 
 import java.util.Properties;
 
@@ -17,6 +23,7 @@ import javax.mail.internet.MimeMessage;
 public class envarEmail extends AsyncTask {
 
     private Context context;
+    private  Activity activity;
     private Session session;
 
     //Information to send email
@@ -27,42 +34,62 @@ public class envarEmail extends AsyncTask {
     private ProgressDialog progressDialog;
 
 
-   
 
 
-    public envarEmail(Context context,  String email, String subject, String message) {
+    private boolean resultadoenvio = true;
+
+
+    public envarEmail(Context context, Activity activity,  String email, String subject, String message) {
 
         this.context = context;
         this.email = email;
         this.subject = subject;
         this.message = message;
+        this.activity = activity;
     }
+
+
+    @Override
+    protected Object doInBackground(Object[] objects) {
+
+        enviarEmail();
+
+        return true;
+
+    }
+
 
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        //progressDialog = new ProgressDialog(context);
+        progressDialog = ProgressDialog.show(activity,"Cadastro","Finalizando Cadastro",false,false);
+
     }
 
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
+
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+            if(resultadoenvio) {
+                activity.getBaseContext().startActivity(new Intent(activity.getBaseContext(), MainActivity.class));
+            }else{
+                Toast.makeText(activity.getBaseContext(),"Não foi possível finalizar o cadastro",Toast.LENGTH_LONG).show();
+            }
+        }
+
     }
 
-    @Override
-    protected Object doInBackground(Object[] objects) {
 
-
-        enviarEmail();
-
-        return null;
-    }
 
 
 
     //não usar esse método diretamente , usar em background.
 
-    public boolean enviarEmail(){
+    public void enviarEmail(){
         Properties props = new Properties();
 
         //Configuring properties for gmail
@@ -76,7 +103,7 @@ public class envarEmail extends AsyncTask {
                 new javax.mail.Authenticator() {
                     //Authenticating the password
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(endmail, senha);
+                        return new PasswordAuthentication(login_e_senha.login, login_e_senha.senha);
                     }
                 });
 
@@ -84,7 +111,7 @@ public class envarEmail extends AsyncTask {
             //Creating MimeMessage object
             MimeMessage mm = new MimeMessage(session);
             //Setting sender address
-            mm.setFrom(new InternetAddress(endmail));
+            mm.setFrom(new InternetAddress(login_e_senha.login));
             //Adding receiver
             mm.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             //Adding subject
@@ -96,9 +123,9 @@ public class envarEmail extends AsyncTask {
 
         } catch (MessagingException e) {
             e.printStackTrace();
-            return false;
+           resultadoenvio = false;
         }
-        return true;
+
     }
 
 }
