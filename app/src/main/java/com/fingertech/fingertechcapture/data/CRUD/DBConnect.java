@@ -22,6 +22,7 @@ public class DBConnect {
     }
 
 
+    //salvar usuario recebe tipo Usuario retorna long que representa o resultado do commit no db
     public long salvarUsuario(Usuario usuario){
 
 
@@ -47,15 +48,10 @@ public class DBConnect {
     }
 
 
-    public boolean checkRegistro(){
-
-        boolean resultado;
-        Cursor cursor = db.rawQuery("select "+ DBCore.REGISTRADO, null);
-        return cursor.moveToFirst();
-
-    }
 
 
+
+    // método retorna usuarios salvos no back de dados
     public List<Usuario> buscaTodos() {
         List<Usuario> users = new ArrayList<Usuario>();
 
@@ -73,6 +69,7 @@ public class DBConnect {
                 userretorno.setDigital(cursor.getString(cursor.getColumnIndex(DBCore.DIGITAL)));
                 userretorno.setDigital_caminho(cursor.getString(cursor.getColumnIndex(DBCore.DIGITAL_FOTO)));
                 userretorno.setFoto(cursor.getString(cursor.getColumnIndex(DBCore.FOTO)));
+
                 users.add(userretorno);
 
             }while (cursor.moveToNext());

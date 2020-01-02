@@ -78,6 +78,8 @@ public class BuscahowFragment extends Fragment implements Nitgen.View, permissoe
 
 
 
+
+    //inicia a instancias e variáveis
     public void initConfig(){
 
 
@@ -95,6 +97,7 @@ public class BuscahowFragment extends Fragment implements Nitgen.View, permissoe
 
 
 
+    //
     @OnClick(R.id.busca_btn_buscardigital)
     public void busca_btn_buscardigital(){
         AlertDialog.Builder msgbox = new AlertDialog.Builder(getActivity());
@@ -109,6 +112,8 @@ public class BuscahowFragment extends Fragment implements Nitgen.View, permissoe
         enserirDigital();
     }
 
+
+    // carrega as digitais do db para o objeto indexsearch
     public void popularDB(){
 
         DBConnect dbConnect = new DBConnect(getContext());
@@ -121,6 +126,7 @@ public class BuscahowFragment extends Fragment implements Nitgen.View, permissoe
     }
 
 
+    //adiciona digital o indexsearch
     public void enserirDigital(){
 
 
@@ -128,6 +134,8 @@ public class BuscahowFragment extends Fragment implements Nitgen.View, permissoe
 
     }
 
+
+    // salvar imagem
     private void setPic(ImageView imageView, String foto) {
         // Get the dimensions of the View
 
@@ -154,6 +162,8 @@ public class BuscahowFragment extends Fragment implements Nitgen.View, permissoe
     }
 
 
+
+    //percorre array de usuarios vindo do db e coloca na interface.
     public void preenchercampos(long id) {
 
         for (Usuario user : users) {

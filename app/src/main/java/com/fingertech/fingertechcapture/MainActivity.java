@@ -1,21 +1,21 @@
 package com.fingertech.fingertechcapture;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
-
+import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
+
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 
 import com.nitgen.SDK.AndroidBSP.NBioBSPJNI;
@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View  {
 
 
     protected Drawable mExpandDrawable;
+    private NavController navController;
 
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -58,22 +59,23 @@ public class MainActivity extends AppCompatActivity implements Nitgen.View  {
                 R.id.nav_tools, R.id.nav_share, R.id.nav_send)
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
         this.nitgen = new Nitgen(this, this);
-
+        Menu menuNav = navigationView.getMenu();
+        MenuItem nav_item2 = menuNav.findItem(R.id.nav_tools);
+        nav_item2.setEnabled(false);
     }
 
 
 
 
 
-
-
-
-
+    @Override
+    public boolean navigateUpTo(Intent upIntent) {
+        return super.navigateUpTo(upIntent);
+    }
 
     @Override
     public void onDeviceConnected() {
