@@ -48,6 +48,8 @@ public class Nitgen  {
 
     }
 
+
+    //inicializa o leitor e adiciona serial ao sdk
     public void initData() {
         NBioBSPJNI.CURRENT_PRODUCT_ID = 0;
         if (bsp == null) {
@@ -74,6 +76,8 @@ public class Nitgen  {
     }
 
 
+
+    // retorno dos méetodos
     NBioBSPJNI.CAPTURE_CALLBACK mCallback = new NBioBSPJNI.CAPTURE_CALLBACK() {
         public void OnDisConnected() {
             NBioBSPJNI.CURRENT_PRODUCT_ID = 0;
@@ -85,6 +89,7 @@ public class Nitgen  {
             view.hideLoading();
         }
 
+        //método para se conectar ao dispositivo
         public void OnConnected() {
             Trace.d("OnConnected");
             NBioBSPJNI.isConnected = true;
@@ -96,6 +101,8 @@ public class Nitgen  {
         }
 
 
+
+        //faz a captura gera a imagem e diz a qualidade da imagem
         public int OnCaptured(NBioBSPJNI.CAPTURED_DATA capturedData) {
             view.onDeviceMessage("IMAGE Quality: " + capturedData.getImageQuality());
             view.onCapture(capturedData);
@@ -135,6 +142,8 @@ public class Nitgen  {
         }
     }
 
+
+
     private void getValue() {
         byte[] value = new byte[StaticVals.wLength_GET_VALUE];
         bsp.getValue(value);
@@ -159,6 +168,7 @@ public class Nitgen  {
     }
 
 
+    //set init info
     private void setInitInfo() {
         NBioBSPJNI.INIT_INFO_0 init_info_0 = bsp.new INIT_INFO_0();
         init_info_0.DefaultTimeout = 11000;
@@ -177,6 +187,7 @@ public class Nitgen  {
         }
     }
 
+    //deetermina a qualidade ao iniciar
     private void setCaptureQualityInfo() {
         NBioBSPJNI.CAPTURE_QUALITY_INFO mCAPTURE_QUALITY_INFO = bsp.new CAPTURE_QUALITY_INFO();
         mCAPTURE_QUALITY_INFO.EnrollCoreQuality = 71;
@@ -192,6 +203,7 @@ public class Nitgen  {
         }
     }
 
+    //get quality info
     private void getCaptureQualityInfo() {
         NBioBSPJNI.CAPTURE_QUALITY_INFO mCAPTURE_QUALITY_INFO = bsp.new CAPTURE_QUALITY_INFO();
         bsp.GetCaptureQualityInfo(mCAPTURE_QUALITY_INFO);
@@ -203,6 +215,7 @@ public class Nitgen  {
         }
     }
 
+    //fechar o auto on
     public void onCaptureCancel(){
         bAutoOn = false;
         if(bsp != null){
@@ -211,6 +224,8 @@ public class Nitgen  {
     }
 
 
+
+    //capture
     public void onCapture1(int timeout) {
         NBioBSPJNI.FIR_HANDLE hCapturedFIR, hAuditFIR;
         NBioBSPJNI.CAPTURED_DATA capturedData;
@@ -464,6 +479,9 @@ public class Nitgen  {
 
     Thread authCaptureThread;
 
+
+
+    //auto on
     public void onAuthCapture1(){
 
         try {
@@ -535,6 +553,8 @@ public class Nitgen  {
         }
     }
 
+
+    //abrir dispositivo
     public void openDevice(){
         if (bsp.isConnected) {
             status = false;
@@ -722,6 +742,8 @@ public class Nitgen  {
         }
     }
 
+
+    //remover usario do array do objeto indexsearch
     public void removeUser(String id){
         indexSearch.RemoveUser(Integer.parseInt(id));
         if (bsp.IsErrorOccured()) {
@@ -731,6 +753,10 @@ public class Nitgen  {
         }
     }
 
+
+
+
+    //identify faz uma captura e compara com a ultima captura
     public void identify(int timeout){
         NBioBSPJNI.FIR_HANDLE hCapturedFIR, hAuditFIR;
         NBioBSPJNI.CAPTURED_DATA capturedData;
@@ -785,6 +811,8 @@ public class Nitgen  {
             }
         }
     }
+
+
     public void onAddFIRstring(String digital, long id) {
         Log.i("onAddFIRstring", "fir onadd e id"+digital+" "+ id);
         NBioBSPJNI.FIR_TEXTENCODE textencode = bsp.new FIR_TEXTENCODE();

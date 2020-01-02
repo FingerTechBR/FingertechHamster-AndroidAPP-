@@ -11,6 +11,6 @@
     <string name="menu_gallery">Cadastro</string>
     <string name="menu_slideshow">Busca</string>
     <string name="menu_tools">Ajustes</string>
-    <string name="menu_share">Share</string>
+    <string name="menu_share">Contato</string>
     <string name="menu_send">Send</string>
 </resources>
